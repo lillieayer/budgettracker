@@ -1,8 +1,9 @@
 # Budget Tracker App
 
 ## Setup
-1. clone the github repository files into android studio
-2. click on the green CODE button in main github page
-3.  choose the url from HTTPS and run in terminal
-
- git clone [paste URL from HTTPS] 
+1. Navigate to [https://github.com/gdscwm/budgettracker](https://github.com/gdscwm/budgettracker) and click on the green "Code" button in the upper right-hand corner.
+2. On the "HTTPS" tab, copy the link. Then, open Terminal, `cd` to a directory where you want to keep the project code, and run:
+   
+    ```git clone [LINK YOU COPIED]```
+   
+   You will need your GitHub username and [Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens).
