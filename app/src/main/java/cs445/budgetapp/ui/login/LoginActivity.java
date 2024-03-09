@@ -2,6 +2,7 @@ package cs445.budgetapp.ui.login;
 
 import android.app.Activity;
 
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -22,6 +23,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import cs445.budgetapp.BudgetFragment;
 import cs445.budgetapp.R;
 import cs445.budgetapp.ui.login.LoginViewModel;
 import cs445.budgetapp.ui.login.LoginViewModelFactory;
@@ -79,7 +81,7 @@ public class LoginActivity extends AppCompatActivity {
                 setResult(Activity.RESULT_OK);
 
                 //Complete and destroy login activity once successful
-                finish();
+               // finish();
             }
         });
 
@@ -126,7 +128,10 @@ public class LoginActivity extends AppCompatActivity {
 
     private void updateUiWithUser(LoggedInUserView model) {
         String welcome = getString(R.string.welcome) + model.getDisplayName();
-        // TODO : initiate successful logged in experience
+        FragmentManager fragmentmanager = getSupportFragmentManager();
+        // make transition and add to back stack
+        fragmentmanager.beginTransaction().replace(R.id.login_container, new BudgetFragment()).setReorderingAllowed(true)
+                .addToBackStack(null).commit();
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
     }
 

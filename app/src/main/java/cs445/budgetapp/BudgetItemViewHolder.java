@@ -35,7 +35,7 @@ public class BudgetItemViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void setBudgetCategory(String category){
-        TextView budgetCategory = myView.findViewById(R.id.budget_category);
+        TextView budgetCategory = myView.findViewById(R.id.budget_category_text);
         budgetCategory.setText("Category: " + category);
     }
 

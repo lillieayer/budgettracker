@@ -1,5 +1,7 @@
 package cs445.budgetapp;
 
+import java.util.Date;
+
 /**
  * Budget data class object will define the terms for a budget item set by user
  */

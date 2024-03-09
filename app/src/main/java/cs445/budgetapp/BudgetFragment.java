@@ -3,6 +3,7 @@ package cs445.budgetapp;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
@@ -22,6 +23,7 @@ public class BudgetFragment extends Fragment {
 
 
 
+
     public BudgetFragment() {
         // Required empty public constructor
     }
@@ -30,6 +32,7 @@ public class BudgetFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
     }
 
@@ -40,6 +43,8 @@ public class BudgetFragment extends Fragment {
         View myView = inflater.inflate(R.layout.fragment_budget, container, false);
         RecyclerView recyclerView=myView.findViewById(R.id.recycler_view);
 
+
+
         List<Budget> budgetList = new ArrayList<>();
         // add new budgets to old list then reset in shared pref
         BudgetAdapter budgetAdapter = new BudgetAdapter(budgetList);
@@ -48,11 +53,17 @@ public class BudgetFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(budgetAdapter);
 
-        FloatingActionButton addBudget = myView.findViewById(R.id.floatingActionButton);
-        addBudget.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton addBudgetButton = myView.findViewById(R.id.addBudgetFAB);
+        addBudgetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.v("Success!", "Adding New budget!");
+                AddBudget addBudget = new AddBudget();
+                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+                transaction.replace(R.id.budget_fragment_layout, addBudget);
+                transaction.addToBackStack(null);
+                transaction.commit();
+
+                Log.v("Success!", "Going to add new budget page!");
             }
         });
 
