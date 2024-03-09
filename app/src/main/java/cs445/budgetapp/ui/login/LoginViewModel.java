@@ -50,7 +50,7 @@ public class LoginViewModel extends ViewModel {
             loginFormState.setValue(new LoginFormState(true));
         }
     }
-
+    //TODO: Replace with query to persistent storage to check via username && pw
     // A placeholder username validation check
     private boolean isUserNameValid(String username) {
         if (username == null) {
@@ -65,6 +65,6 @@ public class LoginViewModel extends ViewModel {
 
     // A placeholder password validation check
     private boolean isPasswordValid(String password) {
-        return password != null && password.trim().length() > 5;
+        return password != null;
     }
 }
