@@ -62,6 +62,11 @@ public class BudgetActivity extends AppCompatActivity {
                 String budgetComment = editComment.getText().toString();
                 Budget new_budget = new Budget(budgetName, budgetCategory, budgetDate, Integer.parseInt(String.valueOf(budgetAmt)),budgetComment);
                 budgetList.add(new_budget);
+                // clear fields
+                editName.setText("");
+                editAmt.setText(0);
+                editDate.setText("");
+                editComment.setText("");
 
             }
         });
