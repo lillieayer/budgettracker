@@ -1,4 +1,4 @@
-package cs445.budgetapp;
+package cs445.budgetapp.ui.budget;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,6 +16,8 @@ import android.widget.Spinner;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import cs445.budgetapp.R;
 
 public class BudgetActivity extends AppCompatActivity {
 

@@ -1,6 +1,9 @@
 package cs445.budgetapp.data;
 
+import androidx.room.Room;
+
 import cs445.budgetapp.data.model.LoggedInUser;
+import cs445.budgetapp.database.AppDatabase;
 
 /**
  * Class that requests authentication and user information from the remote data source and
@@ -15,6 +18,7 @@ public class LoginRepository {
     // If user credentials will be cached in local storage, it is recommended it be encrypted
     // @see https://developer.android.com/training/articles/keystore
     private LoggedInUser user = null;
+
 
     // private constructor : singleton access
     private LoginRepository(LoginDataSource dataSource) {

@@ -1,10 +1,12 @@
-package cs445.budgetapp;
+package cs445.budgetapp.ui.budget;
 
 
 import android.view.View;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import cs445.budgetapp.R;
 
 public class BudgetItemViewHolder extends RecyclerView.ViewHolder {
     View myView;

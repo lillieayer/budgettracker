@@ -12,6 +12,8 @@ import android.widget.Toast;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
+import cs445.budgetapp.ui.budget.BudgetActivity;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -31,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
                 switch(item.getItemId())
                 {
                     case R.id.navigation_budget:
-                        startActivity(new Intent(getApplicationContext(),BudgetActivity.class));
+                        startActivity(new Intent(getApplicationContext(), BudgetActivity.class));
                         break;
                     case R.id.navigation_expenses:
                         Toast.makeText(getApplicationContext(), "Going to expense tracker!", Toast.LENGTH_SHORT);
