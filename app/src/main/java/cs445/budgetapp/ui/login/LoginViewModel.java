@@ -50,13 +50,12 @@ public class LoginViewModel extends ViewModel {
             loginFormState.setValue(new LoginFormState(true));
         }
     }
-    //TODO: Replace with query to persistent storage to check via username && pw
-    // A placeholder username validation check
+
     private boolean isUserNameValid(String username) {
         if (username == null) {
             return false;
         }
-        if (username.contains("@")) {
+        if ((username.contains("@")) && (username.length() < 320)) {
             return Patterns.EMAIL_ADDRESS.matcher(username).matches();
         } else {
             return !username.trim().isEmpty();
@@ -65,6 +64,6 @@ public class LoginViewModel extends ViewModel {
 
     // A placeholder password validation check
     private boolean isPasswordValid(String password) {
-        return password != null;
+        return ((password != null) && (password.length() > 5));
     }
 }

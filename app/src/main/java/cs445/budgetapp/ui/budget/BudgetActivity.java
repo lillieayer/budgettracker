@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -54,6 +55,24 @@ public class BudgetActivity extends AppCompatActivity {
     public void onResume(){
         super.onResume();
 
+        TextWatcher textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                checkFields();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        };
+
+        editAmt.addTextChangedListener(textWatcher);
+        editName.addTextChangedListener(textWatcher);
+
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,7 +85,7 @@ public class BudgetActivity extends AppCompatActivity {
                 budgetList.add(new_budget);
                 // clear fields
                 editName.setText("");
-                editAmt.setText(0);
+                editAmt.setText("0.0");
                 editDate.setText("");
                 editComment.setText("");
 
@@ -86,6 +105,17 @@ public class BudgetActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void checkFields() {
+        String text1 = editAmt.getText().toString();
+        String text2 = editName.getText().toString();
+
+        if (!text1.isEmpty() && !text2.isEmpty()) {
+            saveButton.setEnabled(true);
+        } else {
+            saveButton.setEnabled(false);
+        }
     }
 
 }

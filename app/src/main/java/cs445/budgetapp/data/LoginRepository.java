@@ -1,9 +1,6 @@
 package cs445.budgetapp.data;
 
-import androidx.room.Room;
-
 import cs445.budgetapp.data.model.LoggedInUser;
-import cs445.budgetapp.database.AppDatabase;
 
 /**
  * Class that requests authentication and user information from the remote data source and
