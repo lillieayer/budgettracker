@@ -29,6 +29,8 @@
     <string name="nav_search">Search</string>
     <string name="signup">Create Account</string>
     <string name="createUsername">Enter a username: </string>
+    <string name="createFirstName">Enter first name: </string>
+    <string name="createLastName">Enter last name: </string>
     <string name="createPW">Enter a password: </string>
     <string-array name="budgetCategories">
         <item>Housing</item>
