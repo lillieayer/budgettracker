@@ -15,9 +15,12 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 
+import com.google.firebase.database.DatabaseReference;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import cs445.budgetapp.MyApplication;
 import cs445.budgetapp.R;
 
 public class BudgetActivity extends AppCompatActivity {
@@ -27,11 +30,15 @@ public class BudgetActivity extends AppCompatActivity {
     Spinner categorySpinner;
     String budgetCategory, budgetName;
     List<Budget> budgetList;
+    String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_budget);
+
+        Bundle bundle = getIntent().getExtras();
+        email = bundle.getString("userEmail");
 
         categorySpinner = findViewById(R.id.edit_budget_category);
         saveButton = findViewById(R.id.saveButton);
@@ -40,6 +47,7 @@ public class BudgetActivity extends AppCompatActivity {
         editDate = findViewById(R.id.edit_budget_date);
         editAmt = findViewById(R.id.edit_budget_amt);
         editComment = findViewById(R.id.edit_budget_comment);
+
 
         budgetList = new ArrayList<>();
         // add new budgets to old list then reset in shared pref
@@ -84,6 +92,11 @@ public class BudgetActivity extends AppCompatActivity {
             String budgetComment = editComment.getText().toString();
             Budget new_budget = new Budget(budgetName, budgetCategory, budgetDate, Integer.parseInt(String.valueOf(budgetAmt)),budgetComment);
             budgetList.add(new_budget);
+
+            MyApplication app = new MyApplication();
+            DatabaseReference users = app.getDb().getReference("/Users");
+            users.child(email).setValue(new_budget);
+
             // clear fields
             editName.setText("");
             editAmt.setText("0.0");
@@ -107,15 +120,5 @@ public class BudgetActivity extends AppCompatActivity {
 
     }
 
-    private void checkFields() {
-        String text1 = editAmt.getText().toString();
-        String text2 = editName.getText().toString();
-
-        if (!text1.isEmpty() && !text2.isEmpty()) {
-            saveButton.setEnabled(true);
-        } else {
-            saveButton.setEnabled(false);
-        }
-    }
 
 }

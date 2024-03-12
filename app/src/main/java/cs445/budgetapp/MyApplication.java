@@ -10,16 +10,16 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class MyApplication extends Application {
 
-    private DatabaseReference db;
+    private FirebaseDatabase db;
     @Override
     public void onCreate() {
         super.onCreate();
         // Initialize your global resources here
-        db = FirebaseDatabase.getInstance().getReference();
+        db = FirebaseDatabase.getInstance();
         FirebaseApp.initializeApp(this);
     }
 
-    public DatabaseReference getDb() {
+    public FirebaseDatabase getDb() {
         return db;
     }
 }

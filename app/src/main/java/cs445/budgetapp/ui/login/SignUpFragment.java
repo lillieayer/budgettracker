@@ -18,8 +18,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.database.DatabaseReference;
 
 
+import cs445.budgetapp.MyApplication;
 import cs445.budgetapp.R;
 
 
@@ -29,6 +31,8 @@ public class SignUpFragment extends Fragment {
     String pw;
 
     Button signupButton;
+
+    boolean isNewUser;
 
     public SignUpFragment() {
         // Required empty public constructor
@@ -82,19 +86,19 @@ public class SignUpFragment extends Fragment {
 
 
         signupButton.setOnClickListener(view1 -> {
-            String email = createUser.getText().toString();
-            String password = createPW.getText().toString();
             createUser.setText("");
             createPW.setText("");
-            mAuth.createUserWithEmailAndPassword(email, password)
+            mAuth.createUserWithEmailAndPassword(email, pw)
                     .addOnCompleteListener((OnCompleteListener<AuthResult>) task -> {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("Success", "createUserWithEmail:success");
                             LinearLayout createAccount = view.findViewById(R.id.createAccountContainer);
                             createAccount.setVisibility(View.INVISIBLE);
+                            isNewUser = true;
                             Toast.makeText(getContext(), "Account Created! Log in to continue!", Toast.LENGTH_LONG).show();
                         } else {
+                            isNewUser = false;
                             // Sign up failed
                             if (task.getException() instanceof FirebaseAuthUserCollisionException) {
                                 // User already exists
@@ -113,6 +117,14 @@ public class SignUpFragment extends Fragment {
         return view;
     }
 
+    public boolean getIsNewUser(){
+        return isNewUser;
+    }
+
+    public String getEmail(){
+        return email;
+    }
+
     private void setSignUpButton(){
         if ((!email.isEmpty()) && (!pw.isEmpty())) {
             signupButton.setEnabled(true);
@@ -120,4 +132,5 @@ public class SignUpFragment extends Fragment {
             signupButton.setEnabled(false);
         }
     }
+
 }

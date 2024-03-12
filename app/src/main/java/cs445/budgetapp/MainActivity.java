@@ -2,6 +2,7 @@ package cs445.budgetapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
 
 import android.content.Intent;
@@ -13,11 +14,14 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
 import cs445.budgetapp.ui.budget.BudgetActivity;
+import cs445.budgetapp.ui.login.SignUpFragment;
 
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        Bundle recievedBundle = getIntent().getExtras();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -33,7 +37,12 @@ public class MainActivity extends AppCompatActivity {
                 switch(item.getItemId())
                 {
                     case R.id.navigation_budget:
-                        startActivity(new Intent(getApplicationContext(), BudgetActivity.class));
+                        Intent intent = new Intent(getApplicationContext(), BudgetActivity.class);
+                        Bundle bundle = getIntent().getExtras();
+                        if (bundle != null){
+                            intent.putExtras(bundle);
+                        }
+                        startActivity(intent);
                         break;
                     case R.id.navigation_expenses:
                         Toast.makeText(getApplicationContext(), "Going to expense tracker!", Toast.LENGTH_SHORT);

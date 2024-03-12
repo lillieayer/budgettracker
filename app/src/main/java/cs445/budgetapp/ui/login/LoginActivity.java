@@ -42,6 +42,7 @@ public class LoginActivity extends AppCompatActivity {
     private LoginViewModel loginViewModel;
     private ActivityLoginBinding binding;
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,8 +71,20 @@ public class LoginActivity extends AppCompatActivity {
                                     // Sign in success, update UI with the signed-in user's information
                                     Log.d("Success", "signInWithEmail:success");
                                     FirebaseUser user = mAuth.getCurrentUser();
-                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                    startActivity(intent);
+                                    SignUpFragment fragment = (SignUpFragment) getSupportFragmentManager().findFragmentById(R.id.createAccountContainer);
+                                    if (fragment != null) {
+                                        boolean isNewUser = fragment.getIsNewUser();
+                                        if (isNewUser){
+                                            Bundle bundle = new Bundle();
+                                            bundle.putString("userEmail", fragment.getEmail());
+                                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                            intent.putExtras(bundle);
+                                            startActivity(intent);
+                                        } else{
+                                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                            startActivity(intent);
+                                        }
+                                    }
 
                                 } else {
                                     // If sign in fails, display a message to the user.

@@ -2,6 +2,7 @@ package cs445.budgetapp.data;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -29,8 +30,11 @@ public class LoginDataSource {
 
     private Context context;
 
-    public void startNewActivity() {
+    public void startNewActivity(String email) {
+        Bundle bundle = new Bundle();
+        bundle.putString("userEmail", email);
         Intent intent = new Intent(context, MainActivity.class);
+        intent.putExtras(bundle);
         context.startActivity(intent);
     }
 
@@ -38,31 +42,28 @@ public class LoginDataSource {
 
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mAuth.signInWithEmailAndPassword(username, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d("Success", "signInWithEmail:success");
-                            Toast.makeText(context,"Sign in was successful!", Toast.LENGTH_LONG);
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            startNewActivity();
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d("Success", "signInWithEmail:success");
+                        Toast.makeText(context,"Sign in was successful!", Toast.LENGTH_LONG);
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        startNewActivity(username);
 
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Toast.makeText(context, "Username or Password incorrect", Toast.LENGTH_LONG);
-                            Log.w("Fail", "signInWithEmail:failure", task.getException());
-                        }
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Toast.makeText(context, "Username or Password incorrect", Toast.LENGTH_LONG);
+                        Log.w("Fail", "signInWithEmail:failure", task.getException());
                     }
                 });
 
         try {
             // TODO: handle loggedInUser authentication
-            LoggedInUser fakeUser =
+            LoggedInUser newuser =
                     new LoggedInUser(
                             java.util.UUID.randomUUID().toString(),
                             "Jane Doe");
-            return new Result.Success<>(fakeUser);
+            return new Result.Success<>(newuser);
         } catch (Exception e) {
             return new Result.Error(new IOException("Error logging in", e));
         }
