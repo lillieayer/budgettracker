@@ -70,6 +70,7 @@
                     android:layout_marginBottom="10dp"
                     android:hint="@string/editAmt"
                     android:inputType="numberDecimal"
+                    android:text="0.0"
                     android:textColor="@color/black"
                     android:textSize="18sp" />
 

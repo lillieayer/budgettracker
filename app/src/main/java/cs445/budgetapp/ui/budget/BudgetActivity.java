@@ -25,8 +25,7 @@ public class BudgetActivity extends AppCompatActivity {
     EditText editName, editDate, editAmt, editComment;
     Button saveButton;
     Spinner categorySpinner;
-    String budgetCategory;
-
+    String budgetCategory, budgetName;
     List<Budget> budgetList;
 
     @Override
@@ -55,41 +54,42 @@ public class BudgetActivity extends AppCompatActivity {
     public void onResume(){
         super.onResume();
 
-        TextWatcher textWatcher = new TextWatcher() {
+        editName.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                checkFields();
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
             }
 
             @Override
-            public void afterTextChanged(Editable s) {
-            }
-        };
-
-        editAmt.addTextChangedListener(textWatcher);
-        editName.addTextChangedListener(textWatcher);
-
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // get user input
-                String budgetName = editName.getText().toString();
-                Editable budgetAmt = editAmt.getText();
-                String budgetDate = editDate.getText().toString();
-                String budgetComment = editComment.getText().toString();
-                Budget new_budget = new Budget(budgetName, budgetCategory, budgetDate, Integer.parseInt(String.valueOf(budgetAmt)),budgetComment);
-                budgetList.add(new_budget);
-                // clear fields
-                editName.setText("");
-                editAmt.setText("0.0");
-                editDate.setText("");
-                editComment.setText("");
+            public void afterTextChanged(Editable editable) {
+                budgetName = editName.getText().toString();
+                if (!budgetName.isEmpty()){
+                    saveButton.setEnabled(true);
+                } else{
+                    saveButton.setEnabled(false);
+                }
 
             }
+        });
+
+        saveButton.setOnClickListener(view -> {
+            // get user input
+            Editable budgetAmt = editAmt.getText();
+            String budgetDate = editDate.getText().toString();
+            String budgetComment = editComment.getText().toString();
+            Budget new_budget = new Budget(budgetName, budgetCategory, budgetDate, Integer.parseInt(String.valueOf(budgetAmt)),budgetComment);
+            budgetList.add(new_budget);
+            // clear fields
+            editName.setText("");
+            editAmt.setText("0.0");
+            editDate.setText("");
+            editComment.setText("");
+
         });
 
         categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

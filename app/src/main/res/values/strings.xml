@@ -16,8 +16,8 @@
     <string name="title_activity_budget">BudgetActivity</string>
     <string name="action_settings">Settings</string>
     <string name="add_budget">Click To Add A New Budget</string>
-    <string name="editName">Enter Name For Budget Item: </string>
-    <string name="editAmt">Enter Amount: </string>
+    <string name="editName">Enter Name For Budget Item:  *Required*</string>
+    <string name="editAmt">Enter Amount: *Required*</string>
     <string name="editDate">Enter a Start Date: </string>
     <string name="editCategory">Pick a Category: </string>
     <string name="editComment">Comment: </string>
