@@ -1,5 +1,6 @@
 package cs445.budgetapp.ui.login;
 
+import android.content.Context;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 
@@ -32,9 +33,6 @@ public class SignUpFragment extends Fragment {
 
     Button signupButton;
 
-    String userData;
-
-    boolean isNewUser = false;
 
     public SignUpFragment() {
         // Required empty public constructor
@@ -97,10 +95,8 @@ public class SignUpFragment extends Fragment {
                             Log.d("Success", "createUserWithEmail:success");
                             LinearLayout createAccount = view.findViewById(R.id.createAccountContainer);
                             createAccount.setVisibility(View.INVISIBLE);
-                            isNewUser = true;
                             Toast.makeText(getContext(), "Account Created! Log in to continue!", Toast.LENGTH_LONG).show();
                         } else {
-                            isNewUser = false;
                             // Sign up failed
                             if (task.getException() instanceof FirebaseAuthUserCollisionException) {
                                 // User already exists
@@ -119,18 +115,8 @@ public class SignUpFragment extends Fragment {
         return view;
     }
 
-    interface sendData{
-        void sendData(String email);
-    }
 
 
-    public boolean getIsNewUser(){
-        return isNewUser;
-    }
-
-    public String getEmail(){
-        return email;
-    }
 
     private void setSignUpButton(){
         if ((!email.isEmpty()) && (!pw.isEmpty())) {

@@ -5,6 +5,7 @@ import android.app.Application;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -14,24 +15,20 @@ public class MyApplication extends Application {
 
     private FirebaseDatabase db;
 
-    private LoggedInUser currUser;
+    private FirebaseUser currUser;
     @Override
     public void onCreate() {
         super.onCreate();
         // Initialize your global resources here
         db = FirebaseDatabase.getInstance();
         FirebaseApp.initializeApp(this);
+        currUser = FirebaseAuth.getInstance().getCurrentUser();
     }
 
     public FirebaseDatabase getDb() {
         return db;
     }
-
-    public void setCurrUser(LoggedInUser user){
-        this.currUser = user;
-    }
-
-    public LoggedInUser getCurrUser(){
+    public FirebaseUser getAuthUser(){
         return currUser;
     }
 }

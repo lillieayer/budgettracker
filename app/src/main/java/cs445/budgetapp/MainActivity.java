@@ -21,7 +21,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        Bundle recievedBundle = getIntent().getExtras();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -31,28 +30,22 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setSelectedItemId(R.id.main_activity_container);
 
         // Perform item selected listener
-        bottomNavigationView.setOnItemReselectedListener(new NavigationBarView.OnItemReselectedListener() {
-            @Override
-            public void onNavigationItemReselected(@NonNull MenuItem item) {
-                switch(item.getItemId())
-                {
-                    case R.id.navigation_budget:
-                        Intent intent = new Intent(getApplicationContext(), BudgetActivity.class);
-                        Bundle bundle = getIntent().getExtras();
-                        if (bundle != null){
-                            intent.putExtras(bundle);
-                        }
-                        startActivity(intent);
-                        break;
-                    case R.id.navigation_expenses:
-                        Toast.makeText(getApplicationContext(), "Going to expense tracker!", Toast.LENGTH_SHORT);
-                        break;
-                    case R.id.navigation_search:
-                        Toast.makeText(getApplicationContext(), "Going to webview!", Toast.LENGTH_SHORT);
-                        break;
-                    default:
-                        startActivity(new Intent(getApplicationContext(),MainActivity.class));
-                }
+        bottomNavigationView.setOnItemReselectedListener(item -> {
+            Intent intent;
+            switch(item.getItemId())
+            {
+                case R.id.navigation_budget:
+                    intent = new Intent(getApplicationContext(), BudgetActivity.class);
+                    startActivity(intent);
+                    break;
+                case R.id.navigation_expenses:
+                    Toast.makeText(getApplicationContext(), "Going to expense tracker!", Toast.LENGTH_SHORT).show();
+                    break;
+                case R.id.navigation_search:
+                    Toast.makeText(getApplicationContext(), "Going to webview!", Toast.LENGTH_SHORT).show();
+                    break;
+                default:
+                    startActivity(new Intent(getApplicationContext(),MainActivity.class));
             }
         });
 
