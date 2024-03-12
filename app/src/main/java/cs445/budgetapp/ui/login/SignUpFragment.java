@@ -32,7 +32,9 @@ public class SignUpFragment extends Fragment {
 
     Button signupButton;
 
-    boolean isNewUser;
+    String userData;
+
+    boolean isNewUser = false;
 
     public SignUpFragment() {
         // Required empty public constructor
@@ -116,6 +118,11 @@ public class SignUpFragment extends Fragment {
 
         return view;
     }
+
+    interface sendData{
+        void sendData(String email);
+    }
+
 
     public boolean getIsNewUser(){
         return isNewUser;

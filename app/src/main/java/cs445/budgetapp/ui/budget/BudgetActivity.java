@@ -1,5 +1,7 @@
 package cs445.budgetapp.ui.budget;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,6 +17,9 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
@@ -22,6 +27,7 @@ import java.util.List;
 
 import cs445.budgetapp.MyApplication;
 import cs445.budgetapp.R;
+import cs445.budgetapp.data.model.LoggedInUser;
 
 public class BudgetActivity extends AppCompatActivity {
 
@@ -32,10 +38,15 @@ public class BudgetActivity extends AppCompatActivity {
     List<Budget> budgetList;
     String email;
 
+    LoggedInUser user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_budget);
+
+        MyApplication app = new MyApplication();
+        user = app.getCurrUser();
 
         Bundle bundle = getIntent().getExtras();
         email = bundle.getString("userEmail");
@@ -48,9 +59,42 @@ public class BudgetActivity extends AppCompatActivity {
         editAmt = findViewById(R.id.edit_budget_amt);
         editComment = findViewById(R.id.edit_budget_comment);
 
-
         budgetList = new ArrayList<>();
         // add new budgets to old list then reset in shared pref
+        if (user != null){
+            String email = user.getUserEmail();
+            DatabaseReference userData = app.getDb().getReference("/Users").child(email);
+            userData.addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                    Budget new_budget = snapshot.getValue(Budget.class);
+                    budgetList.add(new_budget);
+
+                }
+
+                @Override
+                public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                }
+
+                @Override
+                public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                    Budget old_budget = snapshot.getValue(Budget.class);
+                    budgetList.remove(old_budget);
+
+                }
+
+                @Override
+                public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
 
         BudgetAdapter budgetAdapter = new BudgetAdapter(budgetList);
         RecyclerView recyclerView = findViewById(R.id.recycler_view);

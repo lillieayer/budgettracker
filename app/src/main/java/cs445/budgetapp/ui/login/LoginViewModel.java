@@ -8,6 +8,7 @@ import android.content.Context;
 import android.util.Patterns;
 
 
+import cs445.budgetapp.MyApplication;
 import cs445.budgetapp.data.LoginRepository;
 
 import cs445.budgetapp.R;
@@ -42,6 +43,9 @@ public class LoginViewModel extends ViewModel {
         if (result instanceof Result.Success) {
             LoggedInUser data = ((Result.Success<LoggedInUser>) result).getData();
             loginResult.setValue(new LoginResult(new LoggedInUserView(data.getDisplayName())));
+            // save logged in user in global storage
+            MyApplication app = new MyApplication();
+            app.setCurrUser(data);
         } else {
             loginResult.setValue(new LoginResult(R.string.login_failed));
         }

@@ -61,7 +61,7 @@ public class LoginDataSource {
             // TODO: handle loggedInUser authentication
             LoggedInUser newuser =
                     new LoggedInUser(
-                            java.util.UUID.randomUUID().toString(),
+                            username,
                             "Jane Doe");
             return new Result.Success<>(newuser);
         } catch (Exception e) {

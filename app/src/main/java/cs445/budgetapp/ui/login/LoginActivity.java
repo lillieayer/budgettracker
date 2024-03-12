@@ -64,32 +64,29 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 FirebaseAuth mAuth = FirebaseAuth.getInstance();
                 mAuth.signInWithEmailAndPassword(usernameEditText.getText().toString(), passwordEditText.getText().toString())
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    // Sign in success, update UI with the signed-in user's information
-                                    Log.d("Success", "signInWithEmail:success");
-                                    FirebaseUser user = mAuth.getCurrentUser();
-                                    SignUpFragment fragment = (SignUpFragment) getSupportFragmentManager().findFragmentById(R.id.createAccountContainer);
-                                    if (fragment != null) {
-                                        boolean isNewUser = fragment.getIsNewUser();
-                                        if (isNewUser){
-                                            Bundle bundle = new Bundle();
-                                            bundle.putString("userEmail", fragment.getEmail());
-                                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                            intent.putExtras(bundle);
-                                            startActivity(intent);
-                                        } else{
-                                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                            startActivity(intent);
-                                        }
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                // Sign in success, update UI with the signed-in user's information
+                                Log.d("Success", "signInWithEmail:success");
+                                SignUpFragment fragment = (SignUpFragment) getSupportFragmentManager().findFragmentById(R.id.createAccountContainer);
+                                Log.w("Warning", "this is fragment value" + fragment);
+                                if (fragment != null) {
+                                    boolean isNewUser = fragment.getIsNewUser();
+                                    if (isNewUser){
+                                        Bundle bundle = new Bundle();
+                                        bundle.putString("userEmail", fragment.getEmail());
+                                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                        intent.putExtras(bundle);
+                                        startActivity(intent);
+                                    } else{
+                                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                        startActivity(intent);
                                     }
-
-                                } else {
-                                    // If sign in fails, display a message to the user.
-                                    Log.w("Fail", "signInWithEmail:failure", task.getException());
                                 }
+
+                            } else {
+                                // If sign in fails, display a message to the user.
+                                Log.w("Fail", "signInWithEmail:failure", task.getException());
                             }
                         });
             }
