@@ -72,19 +72,24 @@ public class BudgetActivity extends AppCompatActivity {
         FirebaseUser currUser = app.getAuthUser();
         if (currUser != null) {
             email = currUser.getEmail();
-            // initialize db reference for access
-            userData = app.getDb().getReference("/Users").child(email);
+            Log.d("Print", String.valueOf(currUser));
             // generate unique key for budget storage
         }
+
+        // initialize db reference for access
+        userData = app.getDb().getReference();
+
         // retrieve users past budgets
         userData.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot pastBudgets) {
-                for (DataSnapshot budget : pastBudgets.getChildren()){
-                    String key = budget.getKey();
-                    String value = budget.getValue(String.class);
-                    Log.d("TAG", "Key: " + key + ", Value: " + value);
+                if (pastBudgets.exists()){
+                    for (DataSnapshot budget : pastBudgets.getChildren()){
+                        String key = budget.getKey();
+                        String value = budget.getValue(String.class);
+                        Log.d("TAG", "Key: " + key + ", Value: " + value);
 
+                    }
                 }
             }
 

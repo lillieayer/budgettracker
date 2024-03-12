@@ -66,6 +66,8 @@ public class SignUpFragment extends Fragment {
             }
         });
 
+        /*
+
         createPW.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -79,6 +81,7 @@ public class SignUpFragment extends Fragment {
             public void afterTextChanged(Editable s) {
             }
         });
+        */
 
 
         signupButton.setOnClickListener(view1 -> {
@@ -94,12 +97,12 @@ public class SignUpFragment extends Fragment {
                             // Sign up failed
                             if (task.getException() instanceof FirebaseAuthUserCollisionException) {
                                 // User already exists
-                                Toast.makeText(getContext(), "Account already exists! You must log in", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "Account already exists! You must log in", Toast.LENGTH_LONG).show();
                             } else {
                                 // Other error
                                 // If sign in fails, display a message to the user.
                                 Log.w("failure", "createUserWithEmail:failure", task.getException());
-                                Toast.makeText(getContext(), "Sign in failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "Sign in failed: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
                             }
 
                         }

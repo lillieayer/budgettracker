@@ -79,7 +79,7 @@ public class LoginActivity extends AppCompatActivity {
         };
         usernameEditText.addTextChangedListener(afterTextChangedListener);
         passwordEditText.addTextChangedListener(afterTextChangedListener);
-
+/*
         // user hits 'enter" on keyboard, log in user (same as submit button)
         passwordEditText.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -87,6 +87,8 @@ public class LoginActivity extends AppCompatActivity {
             }
             return false;
         });
+
+ */
 
     }
 
