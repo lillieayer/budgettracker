@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        BottomNavigationView bottomNavigationView=findViewById(R.id.bottom_navigation);
+        BottomNavigationView bottomNavigationView=findViewById(R.id.bottom_navigation_main);
 
         // Set Home selected
         bottomNavigationView.setSelectedItemId(R.id.main_activity_container);
@@ -48,8 +48,6 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(new Intent(getApplicationContext(),MainActivity.class));
             }
         });
-
-
 
 
 

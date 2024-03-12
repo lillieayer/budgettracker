@@ -28,10 +28,8 @@ import cs445.budgetapp.R;
 
 public class SignUpFragment extends Fragment {
 
-    String email;
-    String pw;
-
     Button signupButton;
+    EditText createUser, createPW;
 
 
     public SignUpFragment() {
@@ -49,8 +47,8 @@ public class SignUpFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_sign_up, container, false);
-        EditText createUser = view.findViewById(R.id.createUsername);
-        EditText createPW = view.findViewById(R.id.createPassword);
+        createUser = view.findViewById(R.id.createUsername);
+        createPW = view.findViewById(R.id.createPassword);
         signupButton = view.findViewById(R.id.signupButton);
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
@@ -60,12 +58,11 @@ public class SignUpFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                setSignUpButton(createUser.getText().toString(), createPW.getText().toString());
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                email = s.toString();
-                setSignUpButton();
             }
         });
 
@@ -75,20 +72,17 @@ public class SignUpFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                setSignUpButton(createUser.getText().toString(), createPW.getText().toString());
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                pw = s.toString();
-                setSignUpButton();
             }
         });
 
 
         signupButton.setOnClickListener(view1 -> {
-            createUser.setText("");
-            createPW.setText("");
-            mAuth.createUserWithEmailAndPassword(email, pw)
+            mAuth.createUserWithEmailAndPassword(createUser.getText().toString(), createPW.getText().toString())
                     .addOnCompleteListener((OnCompleteListener<AuthResult>) task -> {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
@@ -110,6 +104,8 @@ public class SignUpFragment extends Fragment {
 
                         }
                     });
+            createUser.setText("");
+            createPW.setText("");
         });
 
         return view;
@@ -118,7 +114,7 @@ public class SignUpFragment extends Fragment {
 
 
 
-    private void setSignUpButton(){
+    private void setSignUpButton(String email, String pw){
         if ((!email.isEmpty()) && (!pw.isEmpty())) {
             signupButton.setEnabled(true);
         } else{

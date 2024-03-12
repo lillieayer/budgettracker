@@ -43,11 +43,12 @@
         android:id="@+id/signupButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/purple_500"
-        android:layout_marginTop="10dp"
         android:layout_gravity="center"
-        android:textColor="@color/white"
-        android:text="@string/signup"/>
+        android:layout_marginTop="10dp"
+        android:background="@color/purple_500"
+        android:enabled="false"
+        android:text="@string/signup"
+        android:textColor="@color/white" />
 
 
 

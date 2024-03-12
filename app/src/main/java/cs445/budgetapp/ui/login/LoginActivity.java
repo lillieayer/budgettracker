@@ -90,6 +90,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+
     private void logInUser(String username, String pw){
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mAuth.signInWithEmailAndPassword(username, pw)
@@ -106,6 +107,8 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
     }
+
+
 
 
 
