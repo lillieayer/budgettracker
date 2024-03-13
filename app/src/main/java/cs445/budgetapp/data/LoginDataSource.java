@@ -30,13 +30,6 @@ public class LoginDataSource {
 
     private Context context;
 
-    public void startNewActivity(String email) {
-        Bundle bundle = new Bundle();
-        bundle.putString("userEmail", email);
-        Intent intent = new Intent(context, MainActivity.class);
-        intent.putExtras(bundle);
-        context.startActivity(intent);
-    }
 
     public Result<LoggedInUser> login(String username, String password) {
 
@@ -47,8 +40,8 @@ public class LoginDataSource {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d("Success", "signInWithEmail:success");
                         Toast.makeText(context,"Sign in was successful!", Toast.LENGTH_LONG);
-                        FirebaseUser user = mAuth.getCurrentUser();
-                        startNewActivity(username);
+                        Intent intent = new Intent(context, MainActivity.class);
+                        context.startActivity(intent);
 
                     } else {
                         // If sign in fails, display a message to the user.

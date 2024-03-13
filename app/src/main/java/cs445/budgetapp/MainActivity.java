@@ -30,28 +30,23 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setSelectedItemId(R.id.main_activity_container);
 
         // Perform item selected listener
+
         bottomNavigationView.setOnItemReselectedListener(item -> {
-            Intent intent;
-            switch(item.getItemId())
-            {
-                case R.id.navigation_budget:
-                    intent = new Intent(getApplicationContext(), BudgetActivity.class);
-                    startActivity(intent);
-                    break;
-                case R.id.navigation_expenses:
-                    Toast.makeText(getApplicationContext(), "Going to expense tracker!", Toast.LENGTH_SHORT).show();
-                    break;
-                case R.id.navigation_search:
-                    Toast.makeText(getApplicationContext(), "Going to webview!", Toast.LENGTH_SHORT).show();
-                    break;
-                default:
-                    startActivity(new Intent(getApplicationContext(),MainActivity.class));
+            int pageId = item.getItemId();
+
+            if(pageId == R.id.navigation_budget){
+                Toast.makeText(this, "Going to budget", Toast.LENGTH_SHORT).show();
+                startActivity( new Intent(MainActivity.this, BudgetActivity.class));
             }
+            else if(pageId == R.id.navigation_expenses) {
+                Toast.makeText(this, "Going to expense tracker!", Toast.LENGTH_SHORT).show();
+            }
+            else if(pageId == R.id.navigation_search) {
+                Toast.makeText(this, "Going to webviews", Toast.LENGTH_SHORT).show();
+            } else  {
+                Toast.makeText(this, "Already on Home Page!", Toast.LENGTH_SHORT).show();
+            }
+
         });
-
-
-
     }
-
-
 }

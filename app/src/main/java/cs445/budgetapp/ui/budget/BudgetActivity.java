@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -19,11 +18,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -37,7 +32,6 @@ import java.util.List;
 import cs445.budgetapp.MainActivity;
 import cs445.budgetapp.MyApplication;
 import cs445.budgetapp.R;
-import cs445.budgetapp.data.model.LoggedInUser;
 
 public class BudgetActivity extends AppCompatActivity {
 
@@ -73,11 +67,10 @@ public class BudgetActivity extends AppCompatActivity {
         if (currUser != null) {
             email = currUser.getEmail();
             Log.d("Print", String.valueOf(currUser));
-            // generate unique key for budget storage
         }
 
         // initialize db reference for access
-        userData = app.getDb().getReference();
+        userData = app.getDb().getReference("Users/"+ email);
 
         // retrieve users past budgets
         userData.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -147,7 +140,11 @@ public class BudgetActivity extends AppCompatActivity {
 
             // make unique key for each budget's storage
             String key = userData.push().getKey();
-            userData.child(key).setValue(new_budget);
+            if(key != null){
+                userData.child(key).setValue(new_budget);
+            } else{
+                Log.w("failure","Error storing new budget, null key");
+            }
 
             // clear fields
             editName.setText("");
@@ -184,11 +181,7 @@ public class BudgetActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable editable) {
                 budgetName = editName.getText().toString();
-                if (!budgetName.isEmpty()){
-                    saveButton.setEnabled(true);
-                } else{
-                    saveButton.setEnabled(false);
-                }
+                saveButton.setEnabled(!budgetName.isEmpty());
 
             }
         });
@@ -196,39 +189,37 @@ public class BudgetActivity extends AppCompatActivity {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_budget);
 
         // Set Home selected
-        bottomNavigationView.setSelectedItemId(R.id.main_activity_container);
+        bottomNavigationView.setSelectedItemId(R.id.budget_activity_container);
 
         // Perform item selected listener
         bottomNavigationView.setOnItemReselectedListener(item -> {
-            Intent intent;
-            switch(item.getItemId())
-            {
-                case R.id.navigation_budget:
-                    intent = new Intent(getApplicationContext(), BudgetActivity.class);
-                    startActivity(intent);
-                    break;
-                case R.id.navigation_expenses:
-                    Toast.makeText(getApplicationContext(), "Going to expense tracker!", Toast.LENGTH_SHORT).show();
-                    break;
-                case R.id.navigation_search:
-                    Toast.makeText(getApplicationContext(), "Going to webview!", Toast.LENGTH_SHORT).show();
-                    break;
-                default:
-                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            int pageId = item.getItemId();
+
+            if(pageId == R.id.navigation_budget){
+                Toast.makeText(this, "Already on budget page!", Toast.LENGTH_SHORT).show();
             }
+            else if(pageId == R.id.navigation_expenses) {
+                Toast.makeText(this, "Going to expense tracker!", Toast.LENGTH_SHORT).show();
+            }
+            else if(pageId == R.id.navigation_search) {
+                Toast.makeText(this, "Going to webviews", Toast.LENGTH_SHORT).show();
+            } else  {
+                startActivity(new Intent(BudgetActivity.this, MainActivity.class));
+            }
+
         });
     }
 
 
-    // update recycler view to show budget list on ui
-
 
     @Override
-    public void onStop(){
-        super.onStop();
+    protected void onDestroy() {
+        super.onDestroy();
         app = null;
         userData = null;
+        email = null;
+        budgetCategory = null;
+        budgetName = null;
     }
-
 }
 

@@ -5,16 +5,16 @@ package cs445.budgetapp.data.model;
  */
 public class LoggedInUser {
 
-    private String email;
+    private String userId;
     private String displayName;
 
-    public LoggedInUser(String email, String displayName) {
-        this.email = email;
+    public LoggedInUser(String userId, String displayName) {
+        this.userId = userId;
         this.displayName = displayName;
     }
 
-    public String getUserEmail() {
-        return email;
+    public String getUserId() {
+        return userId;
     }
 
     public String getDisplayName() {
