@@ -54,11 +54,15 @@ public class BudgetActivity extends AppCompatActivity {
         EditText editDate = findViewById(R.id.edit_budget_date);
         EditText editAmt = findViewById(R.id.edit_budget_amt);
         EditText editComment = findViewById(R.id.edit_budget_comment);
+
+        editAmt.setText("0.00");
         // setup recycler view components
         List<Budget> budgetList = new ArrayList<>();
         BudgetAdapter budgetAdapter = new BudgetAdapter(budgetList);
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager layout = new LinearLayoutManager(this);
+        layout.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(layout);
         recyclerView.setAdapter(budgetAdapter);
 
         app = (MyApplication) getApplication();
@@ -76,11 +80,16 @@ public class BudgetActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot pastBudgets) {
                 if (pastBudgets.exists()){
+                    ArrayList<Budget> temp = new ArrayList<>();
+                    int numBudgets = 0;
 
                     for (DataSnapshot budget : pastBudgets.getChildren()){
                         Budget old_budget = budget.getValue(Budget.class);
-                        budgetList.add(old_budget);
+                        temp.add(old_budget);
+                        numBudgets++;
                     }
+                    budgetList.addAll(temp);
+                    budgetAdapter.notifyItemRangeInserted(0,numBudgets);
                 }
             }
 
@@ -97,6 +106,8 @@ public class BudgetActivity extends AppCompatActivity {
                 Budget new_budget = (Budget)budgets.getValue(Budget.class);
                 if (new_budget != null){
                     budgetList.add(new_budget);
+                    int i = budgetList.indexOf(new_budget);
+                    budgetAdapter.notifyItemInserted(i);
                 }
             }
 
@@ -107,8 +118,10 @@ public class BudgetActivity extends AppCompatActivity {
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-                Budget old_budget = snapshot.getValue(Budget.class);
+                Budget old_budget = (Budget)snapshot.getValue(Budget.class);
+                int i = budgetList.indexOf(old_budget);
                 budgetList.remove(old_budget);
+                budgetAdapter.notifyItemRemoved(i);
 
             }
 
@@ -127,10 +140,10 @@ public class BudgetActivity extends AppCompatActivity {
 
         saveButton.setOnClickListener(view -> {
             // get user input
-            Editable budgetAmt = editAmt.getText();
+            String budgetAmt = editAmt.getText().toString();
             String budgetDate = editDate.getText().toString();
             String budgetComment = editComment.getText().toString();
-            Budget new_budget = new Budget(budgetName, budgetCategory, budgetDate, Integer.parseInt(String.valueOf(budgetAmt)),budgetComment);
+            Budget new_budget = new Budget(budgetName, budgetCategory, budgetDate, budgetAmt,budgetComment);
 
             // make unique key for each budget's storage
             String key = userData.push().getKey();
@@ -142,7 +155,7 @@ public class BudgetActivity extends AppCompatActivity {
 
             // clear fields
             editName.setText("");
-            editAmt.setText("0.0");
+            editAmt.setText("0.00");
             editDate.setText("");
             editComment.setText("");
 
@@ -179,6 +192,7 @@ public class BudgetActivity extends AppCompatActivity {
 
             }
         });
+
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_budget);
 

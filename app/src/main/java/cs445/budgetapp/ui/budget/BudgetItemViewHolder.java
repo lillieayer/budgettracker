@@ -26,7 +26,7 @@ public class BudgetItemViewHolder extends RecyclerView.ViewHolder {
         budgetDate.setText("Date: " + date);
     }
 
-    public void setBudgetAmount(int amount){
+    public void setBudgetAmount(String amount){
         TextView budgetAmt = myView.findViewById(R.id.budget_amount_text);
         budgetAmt.setText("Amount: $" + amount);
     }

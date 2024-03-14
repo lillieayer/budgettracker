@@ -11,7 +11,20 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            android:layout_marginBottom="50dp"
             android:id="@+id/budget_contents_container">
+                <TextView
+                    android:id="@+id/create_budget_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:background="@color/gold"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:text="@string/create_budget_title"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"/>
 
                 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -19,10 +32,11 @@
                     android:id="@+id/edit_budget_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:background="@color/teal_200"
                     android:orientation="vertical"
-                    android:padding="20dp">
+                    android:padding="10dp">
 
 
                         <EditText
@@ -30,7 +44,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="48dp"
                             android:layout_marginLeft="20dp"
-                            android:layout_marginBottom="20dp"
+                            android:layout_marginBottom="5dp"
                             android:hint="@string/editName"
                             android:inputType="text"
                             android:textColor="@color/black"
@@ -44,7 +58,7 @@
                             android:layout_marginLeft="20dp"
                             android:text="@string/editCategory"
                             android:textColor="@color/black"
-                            android:layout_marginBottom="10dp"
+                            android:layout_marginBottom="5dp"
                             android:textSize="18sp" />
 
                         <Spinner
@@ -52,7 +66,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="48dp"
                             android:layout_marginLeft="20dp"
-                            android:layout_marginBottom="10dp"
+                            android:layout_marginBottom="5dp"
                             android:entries="@array/budgetCategories"
                             android:spinnerMode="dropdown" />
 
@@ -61,7 +75,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="48dp"
                             android:layout_marginLeft="20dp"
-                            android:layout_marginBottom="10dp"
+                            android:layout_marginBottom="5dp"
                             android:hint="@string/editDate"
                             android:inputType="text"
                             android:textColor="@color/black"
@@ -72,10 +86,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="48dp"
                             android:layout_marginLeft="20dp"
-                            android:layout_marginBottom="10dp"
+                            android:layout_marginBottom="5dp"
                             android:hint="@string/editAmt"
                             android:inputType="numberDecimal"
-                            android:text="0.0"
                             android:textColor="@color/black"
                             android:textSize="18sp" />
 
@@ -84,7 +97,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="48dp"
                             android:layout_marginLeft="20dp"
-                            android:layout_marginBottom="10dp"
+                            android:layout_marginBottom="5dp"
                             android:hint="@string/editComment"
                             android:inputType="text"
                             android:textColor="@color/black"
@@ -95,37 +108,39 @@
                             android:layout_width="100dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="5dp"
+                            android:enabled="false"
                             android:text="@string/saveButton" />
 
                 </LinearLayout>
+                <TextView
+                    android:id="@+id/budget_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:background="@color/gold"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:text="@string/nav_budget"
+                    android:textColor="@color/black"
+                    android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/budget_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:background="@color/gold"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:fontFamily="sans-serif-condensed"
-            android:text="@string/nav_budget"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"/>
-
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scrollbars="vertical"
+                    android:scrollbarThumbVertical="@color/gold"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp" />
         </LinearLayout>
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation_budget"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:layout_alignParentBottom="true"
             app:menu="@menu/bottom_navigation_menu"
             />
