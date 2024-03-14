@@ -1,8 +1,11 @@
 package cs445.budgetapp.ui.login;
 
+import androidx.annotation.StringRes;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -11,14 +14,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 
+import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.annotations.Nullable;
 
 
 import cs445.budgetapp.MainActivity;
+import cs445.budgetapp.R;
 import cs445.budgetapp.databinding.ActivityLoginBinding;
 
 public class LoginActivity extends AppCompatActivity {
@@ -40,9 +48,10 @@ public class LoginActivity extends AppCompatActivity {
         final EditText usernameEditText = binding.username;
         final EditText passwordEditText = binding.password;
         final Button loginButton = binding.login;
+        final ProgressBar loadingProgressBar = binding.loading;
 
 
-        loginButton.setOnClickListener(view -> logInUser(usernameEditText.getText().toString(), passwordEditText.getText().toString()));
+        //loginButton.setOnClickListener(view -> logInUser(usernameEditText.getText().toString(), passwordEditText.getText().toString()));
 
         loginViewModel.getLoginFormState().observe(this, loginFormState -> {
             if (loginFormState == null) {
@@ -77,11 +86,13 @@ public class LoginActivity extends AppCompatActivity {
         };
         usernameEditText.addTextChangedListener(afterTextChangedListener);
         passwordEditText.addTextChangedListener(afterTextChangedListener);
-/*
+
         // user hits 'enter" on keyboard, log in user (same as submit button)
         passwordEditText.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                logInUser(usernameEditText.getText().toString(), passwordEditText.getText().toString());
+               // logInUser(usernameEditText.getText().toString(), passwordEditText.getText().toString());
+                loginViewModel.login(usernameEditText.getText().toString(),
+                        passwordEditText.getText().toString());
             }
             return false;
         });
@@ -102,11 +113,11 @@ public class LoginActivity extends AppCompatActivity {
                 setResult(Activity.RESULT_OK);
 
                 //Complete and destroy login activity once successful
-                finish();
+                //finish();
             }
         });
 
-         loginButton.setOnClickListener(new View.OnClickListener() {
+        loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 loadingProgressBar.setVisibility(View.VISIBLE);
@@ -115,7 +126,9 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-            private void updateUiWithUser(LoggedInUserView model) {
+    }
+
+    private void updateUiWithUser(LoggedInUserView model) {
         String welcome = getString(R.string.welcome) + model.getDisplayName();
         // TODO : initiate successful logged in experience
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
@@ -126,9 +139,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
- */
-
-    }
 
     @Override
     protected void onDestroy() {
@@ -137,6 +147,7 @@ public class LoginActivity extends AppCompatActivity {
         binding = null;
     }
 
+    /*
     private void logInUser(String username, String pw){
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mAuth.signInWithEmailAndPassword(username, pw)
@@ -154,7 +165,7 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
-
+*/
 
 
 

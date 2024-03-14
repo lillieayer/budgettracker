@@ -12,6 +12,9 @@ public class Budget {
     private int amount;
     private String comment;
 
+    public Budget(){
+    }
+
     public Budget(String name, String category, String date, int amount, String comment){
         this.name = name;
         this.category = category;

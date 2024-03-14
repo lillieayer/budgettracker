@@ -13,9 +13,9 @@ import cs445.budgetapp.data.model.LoggedInUser;
 
 public class MyApplication extends Application {
 
-    private FirebaseDatabase db;
+    private static FirebaseDatabase db;
 
-    private FirebaseUser currUser;
+    private static FirebaseUser currUser;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -25,10 +25,10 @@ public class MyApplication extends Application {
         currUser = FirebaseAuth.getInstance().getCurrentUser();
     }
 
-    public FirebaseDatabase getDb() {
+    public static FirebaseDatabase getDb() {
         return db;
     }
-    public FirebaseUser getAuthUser(){
+    public static FirebaseUser getAuthUser(){
         return currUser;
     }
 }

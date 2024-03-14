@@ -36,7 +36,7 @@ import cs445.budgetapp.R;
 public class BudgetActivity extends AppCompatActivity {
 
     String budgetCategory, budgetName;
-    String email;
+
     private MyApplication app;
 
     private DatabaseReference userData;
@@ -54,34 +54,32 @@ public class BudgetActivity extends AppCompatActivity {
         EditText editDate = findViewById(R.id.edit_budget_date);
         EditText editAmt = findViewById(R.id.edit_budget_amt);
         EditText editComment = findViewById(R.id.edit_budget_comment);
-        // initialzie app ref
-        app = new MyApplication();
         // setup recycler view components
         List<Budget> budgetList = new ArrayList<>();
         BudgetAdapter budgetAdapter = new BudgetAdapter(budgetList);
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(budgetAdapter);
+
+        app = (MyApplication) getApplication();
         // get user to access auth email
         FirebaseUser currUser = app.getAuthUser();
-        if (currUser != null) {
-            email = currUser.getEmail();
-            Log.d("Print", String.valueOf(currUser));
-        }
+
+        String[] userPathArr = currUser.getEmail().split("@");
+        String userPath = userPathArr[0];
 
         // initialize db reference for access
-        userData = app.getDb().getReference("Users/"+ email);
+        userData = app.getDb().getReference("Users/"+ userPath);
 
         // retrieve users past budgets
         userData.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot pastBudgets) {
                 if (pastBudgets.exists()){
-                    for (DataSnapshot budget : pastBudgets.getChildren()){
-                        String key = budget.getKey();
-                        String value = budget.getValue(String.class);
-                        Log.d("TAG", "Key: " + key + ", Value: " + value);
 
+                    for (DataSnapshot budget : pastBudgets.getChildren()){
+                        Budget old_budget = budget.getValue(Budget.class);
+                        budgetList.add(old_budget);
                     }
                 }
             }
@@ -93,17 +91,13 @@ public class BudgetActivity extends AppCompatActivity {
         });
 
 
-
-
-        // access firebase and read current data to budgetList
-
-
         userData.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                Budget new_budget = snapshot.getValue(Budget.class);
-                budgetList.add(new_budget);
-
+            public void onChildAdded(@NonNull DataSnapshot budgets, @Nullable String previousChildName) {
+                Budget new_budget = (Budget)budgets.getValue(Budget.class);
+                if (new_budget != null){
+                    budgetList.add(new_budget);
+                }
             }
 
             @Override
@@ -211,15 +205,13 @@ public class BudgetActivity extends AppCompatActivity {
     }
 
 
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        app = null;
         userData = null;
-        email = null;
         budgetCategory = null;
         budgetName = null;
+        app = null;
     }
 }
 
