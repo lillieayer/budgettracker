@@ -7,134 +7,137 @@
     android:id="@+id/budget_activity_container"
     tools:context=".ui.budget.BudgetActivity">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_marginBottom="50dp"
-            android:id="@+id/budget_contents_container">
                 <TextView
                     android:id="@+id/create_budget_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:layout_alignParentTop="true"
                     android:background="@color/gold"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
                     android:fontFamily="sans-serif-condensed"
+                    android:padding="10dp"
                     android:text="@string/create_budget_title"
-                    android:textColor="@color/black"
-                    android:textSize="20sp"/>
-
-                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
-                    xmlns:tools="http://schemas.android.com/tools"
-                    android:id="@+id/edit_budget_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@color/teal_200"
-                    android:orientation="vertical"
-                    android:padding="10dp">
-
-
-                        <EditText
-                            android:id="@+id/edit_budget_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="48dp"
-                            android:layout_marginLeft="20dp"
-                            android:layout_marginBottom="5dp"
-                            android:hint="@string/editName"
-                            android:inputType="text"
-                            android:textColor="@color/black"
-                            android:textSize="16sp" />
-
-
-                        <TextView
-                            android:id="@+id/pick_category_text"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="20dp"
-                            android:text="@string/editCategory"
-                            android:textColor="@color/black"
-                            android:layout_marginBottom="5dp"
-                            android:textSize="18sp" />
-
-                        <Spinner
-                            android:id="@+id/edit_budget_category"
-                            android:layout_width="wrap_content"
-                            android:layout_height="48dp"
-                            android:layout_marginLeft="20dp"
-                            android:layout_marginBottom="5dp"
-                            android:entries="@array/budgetCategories"
-                            android:spinnerMode="dropdown" />
-
-                        <EditText
-                            android:id="@+id/edit_budget_date"
-                            android:layout_width="wrap_content"
-                            android:layout_height="48dp"
-                            android:layout_marginLeft="20dp"
-                            android:layout_marginBottom="5dp"
-                            android:hint="@string/editDate"
-                            android:inputType="text"
-                            android:textColor="@color/black"
-                            android:textSize="18sp" />
-
-                        <EditText
-                            android:id="@+id/edit_budget_amt"
-                            android:layout_width="wrap_content"
-                            android:layout_height="48dp"
-                            android:layout_marginLeft="20dp"
-                            android:layout_marginBottom="5dp"
-                            android:hint="@string/editAmt"
-                            android:inputType="numberDecimal"
-                            android:textColor="@color/black"
-                            android:textSize="18sp" />
-
-                        <EditText
-                            android:id="@+id/edit_budget_comment"
-                            android:layout_width="wrap_content"
-                            android:layout_height="48dp"
-                            android:layout_marginLeft="20dp"
-                            android:layout_marginBottom="5dp"
-                            android:hint="@string/editComment"
-                            android:inputType="text"
-                            android:textColor="@color/black"
-                            android:textSize="18sp" />
-
-                        <Button
-                            android:id="@+id/saveButton"
-                            android:layout_width="100dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="5dp"
-                            android:enabled="false"
-                            android:text="@string/saveButton" />
-
-                </LinearLayout>
-                <TextView
-                    android:id="@+id/budget_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:background="@color/gold"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:fontFamily="sans-serif-condensed"
-                    android:text="@string/nav_budget"
                     android:textColor="@color/black"
                     android:textSize="20sp" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scrollbars="vertical"
-                    android:scrollbarThumbVertical="@color/gold"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginLeft="10dp" />
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/edit_budget_layout"
+            android:layout_width="match_parent"
+            android:layout_below="@id/create_budget_title"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:background="@color/teal_200"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+
+                <EditText
+                    android:id="@+id/edit_budget_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginBottom="5dp"
+                    android:hint="@string/editName"
+                    android:inputType="text"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+
+                <TextView
+                    android:id="@+id/pick_category_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="@string/editCategory"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <Spinner
+                    android:id="@+id/edit_budget_category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginBottom="5dp"
+                    android:entries="@array/budgetCategories"
+                    android:spinnerMode="dropdown" />
+
+                <EditText
+                    android:id="@+id/edit_budget_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginBottom="5dp"
+                    android:hint="@string/editDate"
+                    android:inputType="text"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/edit_budget_amt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginBottom="5dp"
+                    android:hint="@string/editAmt"
+                    android:inputType="numberDecimal"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/edit_budget_comment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginBottom="5dp"
+                    android:hint="@string/editComment"
+                    android:inputType="text"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <Button
+                    android:id="@+id/saveButton"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:enabled="false"
+                    android:text="@string/saveButton" />
+
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/budget_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:layout_below="@id/edit_budget_layout"
+            android:paddingRight="10dp"
+            android:background="@color/gold"
+            android:fontFamily="sans-serif-condensed"
+            android:padding="10dp"
+            android:text="@string/nav_budget"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/budget_title"
+            android:layout_above="@id/bottom_navigation_budget"
+            android:layout_marginTop="5dp"
+            android:nestedScrollingEnabled="true"
+            android:scrollbarSize="8dp"
+            android:scrollbarAlwaysDrawVerticalTrack="true"
+            android:scrollbars="vertical"
+            android:scrollbarThumbVertical="@color/gold"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation_budget"

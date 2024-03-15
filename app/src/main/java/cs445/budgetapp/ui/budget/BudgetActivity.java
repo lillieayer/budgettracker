@@ -60,8 +60,7 @@ public class BudgetActivity extends AppCompatActivity {
         List<Budget> budgetList = new ArrayList<>();
         BudgetAdapter budgetAdapter = new BudgetAdapter(budgetList);
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        LinearLayoutManager layout = new LinearLayoutManager(this);
-        layout.setOrientation(LinearLayoutManager.VERTICAL);
+        LinearLayoutManager layout = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(layout);
         recyclerView.setAdapter(budgetAdapter);
 
