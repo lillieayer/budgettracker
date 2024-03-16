@@ -12,6 +12,9 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -58,6 +61,11 @@ public class BudgetActivity extends AppCompatActivity {
         EditText editComment = findViewById(R.id.edit_budget_comment);
 
         editAmt.setText("0.00");
+
+        WebView myWebView = (WebView) findViewById(R.id.webview);
+        myWebView.loadUrl("https://www.nerdwallet.com/article/finance/nerdwallet-budget-calculator");
+        myWebView.setWebViewClient(new MyWebViewClient());
+
 
         app = (MyApplication) getApplication();
         // get user to access auth email
@@ -149,6 +157,22 @@ public class BudgetActivity extends AppCompatActivity {
         });
     }
 
+    private class MyWebViewClient extends WebViewClient {
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+            if ("www.example.com".equals(request.getUrl().getHost())) {
+                // This is your website, so don't override. Let your WebView load the
+                // page.
+                return false;
+            }
+            // Otherwise, the link isn't for a page on your site, so launch another
+            // Activity that handles URLs.
+            Intent intent = new Intent(Intent.ACTION_VIEW, request.getUrl());
+            startActivity(intent);
+            return true;
+        }
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -157,5 +181,7 @@ public class BudgetActivity extends AppCompatActivity {
         budgetName = null;
         app = null;
     }
+
+
 }
 

@@ -160,10 +160,11 @@
             />
 
         <WebView
+            android:id="@+id/webview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/webViewDescrip"
-            android:layout_above="@id/create_budget_title"/>
+            android:layout_above="@id/create_budget_title"
+            android:layout_below="@id/webViewDescrip" />
 
 
 </RelativeLayout>
