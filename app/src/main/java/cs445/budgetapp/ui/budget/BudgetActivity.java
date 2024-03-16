@@ -32,6 +32,8 @@ import java.util.List;
 import cs445.budgetapp.MainActivity;
 import cs445.budgetapp.MyApplication;
 import cs445.budgetapp.R;
+import cs445.budgetapp.ui.profile.BudgetAdapter;
+import cs445.budgetapp.ui.profile.ProfileActivity;
 
 public class BudgetActivity extends AppCompatActivity {
 
@@ -56,13 +58,6 @@ public class BudgetActivity extends AppCompatActivity {
         EditText editComment = findViewById(R.id.edit_budget_comment);
 
         editAmt.setText("0.00");
-        // setup recycler view components
-        List<Budget> budgetList = new ArrayList<>();
-        BudgetAdapter budgetAdapter = new BudgetAdapter(budgetList);
-        RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        LinearLayoutManager layout = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
-        recyclerView.setLayoutManager(layout);
-        recyclerView.setAdapter(budgetAdapter);
 
         app = (MyApplication) getApplication();
         // get user to access auth email
@@ -74,68 +69,37 @@ public class BudgetActivity extends AppCompatActivity {
         // initialize db reference for access
         userData = app.getDb().getReference("Users/"+ userPath);
 
-        // retrieve users past budgets
-        userData.addListenerForSingleValueEvent(new ValueEventListener() {
+        editName.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot pastBudgets) {
-                if (pastBudgets.exists()){
-                    ArrayList<Budget> temp = new ArrayList<>();
-                    int numBudgets = 0;
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                    for (DataSnapshot budget : pastBudgets.getChildren()){
-                        Budget old_budget = budget.getValue(Budget.class);
-                        temp.add(old_budget);
-                        numBudgets++;
-                    }
-                    budgetList.addAll(temp);
-                    budgetAdapter.notifyItemRangeInserted(0,numBudgets);
-                }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                budgetName = editName.getText().toString();
+                saveButton.setEnabled(!budgetName.isEmpty());
 
             }
         });
 
-
-        userData.addChildEventListener(new ChildEventListener() {
+        categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot budgets, @Nullable String previousChildName) {
-                Budget new_budget = (Budget)budgets.getValue(Budget.class);
-                if (new_budget != null){
-                    budgetList.add(new_budget);
-                    int i = budgetList.indexOf(new_budget);
-                    budgetAdapter.notifyItemInserted(i);
-                }
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                budgetCategory = adapterView.getItemAtPosition(i).toString();
+                Log.v("Success", "Category chosen!");
             }
 
             @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                //not modifying data
-            }
+            public void onNothingSelected(AdapterView<?> adapterView) {
 
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-                Budget old_budget = (Budget)snapshot.getValue(Budget.class);
-                int i = budgetList.indexOf(old_budget);
-                budgetList.remove(old_budget);
-                budgetAdapter.notifyItemRemoved(i);
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                //ignore
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                //ignore
             }
         });
-
-
 
         saveButton.setOnClickListener(view -> {
             // get user input
@@ -160,38 +124,6 @@ public class BudgetActivity extends AppCompatActivity {
 
         });
 
-        categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                budgetCategory = adapterView.getItemAtPosition(i).toString();
-                Log.v("Success", "Category chosen!");
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
-        editName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                budgetName = editName.getText().toString();
-                saveButton.setEnabled(!budgetName.isEmpty());
-
-            }
-        });
-
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_budget);
 
@@ -205,8 +137,8 @@ public class BudgetActivity extends AppCompatActivity {
             if(pageId == R.id.navigation_budget){
                 Toast.makeText(this, "Already on budget page!", Toast.LENGTH_SHORT).show();
             }
-            else if(pageId == R.id.navigation_expenses) {
-                Toast.makeText(this, "Going to expense tracker!", Toast.LENGTH_SHORT).show();
+            else if(pageId == R.id.navigation_profile) {
+                startActivity(new Intent(BudgetActivity.this, ProfileActivity.class));
             }
             else if(pageId == R.id.navigation_search) {
                 Toast.makeText(this, "Going to webviews", Toast.LENGTH_SHORT).show();
@@ -216,7 +148,6 @@ public class BudgetActivity extends AppCompatActivity {
 
         });
     }
-
 
     @Override
     protected void onDestroy() {

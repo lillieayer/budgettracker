@@ -1,4 +1,4 @@
-package cs445.budgetapp.ui.budget;
+package cs445.budgetapp.ui.profile;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import cs445.budgetapp.R;
+import cs445.budgetapp.ui.budget.Budget;
 
 public class BudgetAdapter extends RecyclerView.Adapter<BudgetItemViewHolder> {
     private List<Budget> budgetList;

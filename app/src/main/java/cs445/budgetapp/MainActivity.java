@@ -15,6 +15,7 @@ import com.google.android.material.navigation.NavigationBarView;
 
 import cs445.budgetapp.ui.budget.BudgetActivity;
 import cs445.budgetapp.ui.login.SignUpFragment;
+import cs445.budgetapp.ui.profile.ProfileActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,8 +39,9 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "Going to budget", Toast.LENGTH_SHORT).show();
                 startActivity( new Intent(MainActivity.this, BudgetActivity.class));
             }
-            else if(pageId == R.id.navigation_expenses) {
-                Toast.makeText(this, "Going to expense tracker!", Toast.LENGTH_SHORT).show();
+            else if(pageId == R.id.navigation_profile) {
+                startActivity( new Intent(MainActivity.this, ProfileActivity.class));
+                Toast.makeText(this, "Going to profile", Toast.LENGTH_SHORT).show();
             }
             else if(pageId == R.id.navigation_search) {
                 Toast.makeText(this, "Going to webviews", Toast.LENGTH_SHORT).show();

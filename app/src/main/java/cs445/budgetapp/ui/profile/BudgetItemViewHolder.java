@@ -1,4 +1,4 @@
-package cs445.budgetapp.ui.budget;
+package cs445.budgetapp.ui.profile;
 
 
 import android.view.View;

@@ -10,6 +10,7 @@
     <string name="explanation">
         Navigate to the menu tabs below by clicking twice on a location in order to explore creating budgets and tracking expenses to become more financially organized!
     </string>
+    <string name="webviewDescrip">Read below for advice from Nerd Wallet on best budgeting and use the budgeting calculator on their website to help budget smarter!</string>
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
@@ -25,7 +26,7 @@
     <string name="searchButton">Searching</string>
     <string name="nav_home">Home</string>
     <string name="nav_budget">Budgets</string>
-    <string name="nav_expense">Expenses</string>
+    <string name="nav_profile">Profile</string>
     <string name="nav_search">Search</string>
     <string name="signup">Create Account</string>
     <string name="createUsername">Enter a username: </string>
