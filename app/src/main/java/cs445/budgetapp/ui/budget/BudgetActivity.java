@@ -70,9 +70,9 @@ public class BudgetActivity extends AppCompatActivity {
         app = (MyApplication) getApplication();
         // get user to access auth email
         FirebaseUser currUser = app.getAuthUser();
-
-        String[] userPathArr = currUser.getEmail().split("@");
-        String userPath = userPathArr[0];
+        // eliminate poor regex
+        String[] userPathArr = currUser.getEmail().split("@.");
+        String userPath = String.join("", userPathArr);
 
         // initialize db reference for access
         userData = app.getDb().getReference("Users/"+ userPath);
