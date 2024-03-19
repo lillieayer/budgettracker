@@ -2,19 +2,20 @@ package cs445.budgetapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
 
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
-import cs445.budgetapp.ui.budget.BudgetActivity;
-import cs445.budgetapp.ui.login.SignUpFragment;
+import cs445.budgetapp.ui.budget.CreateBudgetActivity;
+import cs445.budgetapp.ui.login.LoginActivity;
 import cs445.budgetapp.ui.profile.ProfileActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -24,6 +25,28 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        FloatingActionButton logoutButton = findViewById(R.id.logoutButton);
+
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseAuth.getInstance().signOut();
+                FirebaseAuth.getInstance().addAuthStateListener(new FirebaseAuth.AuthStateListener() {
+                    @Override
+                    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                        FirebaseUser user = firebaseAuth.getCurrentUser();
+                        if (user == null) {
+                            // User is signed out
+                            Toast.makeText(MainActivity.this, "Logging out", Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                            firebaseAuth.removeAuthStateListener(this); // Remove the listener
+                        }
+                    }
+                });
+            }
+        });
 
         BottomNavigationView bottomNavigationView=findViewById(R.id.bottom_navigation_main);
 
@@ -37,15 +60,13 @@ public class MainActivity extends AppCompatActivity {
 
             if(pageId == R.id.navigation_budget){
                 Toast.makeText(this, "Going to budget", Toast.LENGTH_SHORT).show();
-                startActivity( new Intent(MainActivity.this, BudgetActivity.class));
+                startActivity( new Intent(MainActivity.this, CreateBudgetActivity.class));
             }
             else if(pageId == R.id.navigation_profile) {
                 startActivity( new Intent(MainActivity.this, ProfileActivity.class));
                 Toast.makeText(this, "Going to profile", Toast.LENGTH_SHORT).show();
             }
-            else if(pageId == R.id.navigation_search) {
-                Toast.makeText(this, "Going to webviews", Toast.LENGTH_SHORT).show();
-            } else  {
+            else  {
                 Toast.makeText(this, "Already on Home Page!", Toast.LENGTH_SHORT).show();
             }
 

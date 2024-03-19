@@ -9,16 +9,13 @@
         android:id="@+id/navigation_budget"
         android:checkable="false"
         android:icon="@drawable/baseline_add_card_24"
-        android:title="@string/nav_budget"
+        android:title="@string/nav_make_budget"
         android:visible="true" />
+
     <item
         android:id="@+id/navigation_profile"
         android:icon="@drawable/sharp_account_circle_24"
         android:title="@string/nav_profile"
         android:visible="true" />
-    <item
-        android:id="@+id/navigation_search"
-        android:icon="@drawable/baseline_search_24"
-        android:title="@string/nav_search" />
 
 </menu>

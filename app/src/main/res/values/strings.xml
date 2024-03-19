@@ -28,12 +28,16 @@
     <string name="nav_home">Home</string>
     <string name="nav_budget">Budgets</string>
     <string name="nav_profile">Profile</string>
-    <string name="nav_search">Search</string>
+    <string name="nav_make_budget">Make Budget</string>
     <string name="signup">Create Account</string>
-    <string name="createUsername">Enter a username: </string>
+    <string name="createUsername">Enter a email: </string>
     <string name="createFirstName">Enter first name: </string>
     <string name="createLastName">Enter last name: </string>
     <string name="createPW">Enter a password: </string>
+    <string name="createProfile">Set Up Profile</string>
+    <string name="makeUsername">Enter a username: </string>
+    <string name="editIncome">Enter user income: </string>
+    <string name="createUserWarning">*Note: you can only set your username once*</string>
     <string-array name="budgetCategories">
         <item>Housing</item>
         <item>Insurance</item>

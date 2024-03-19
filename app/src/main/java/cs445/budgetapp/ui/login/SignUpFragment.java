@@ -1,8 +1,11 @@
 package cs445.budgetapp.ui.login;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
+import androidx.security.crypto.EncryptedSharedPreferences;
+import androidx.security.crypto.MasterKey;
 
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -21,6 +24,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.database.DatabaseReference;
 
+
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 
 import cs445.budgetapp.MyApplication;
 import cs445.budgetapp.R;
@@ -52,6 +58,7 @@ public class SignUpFragment extends Fragment {
         signupButton = view.findViewById(R.id.signupButton);
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
+
         createUser.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -66,7 +73,7 @@ public class SignUpFragment extends Fragment {
             }
         });
 
-        /*
+
 
         createPW.addTextChangedListener(new TextWatcher() {
             @Override
@@ -81,7 +88,7 @@ public class SignUpFragment extends Fragment {
             public void afterTextChanged(Editable s) {
             }
         });
-        */
+
 
 
         signupButton.setOnClickListener(view1 -> {

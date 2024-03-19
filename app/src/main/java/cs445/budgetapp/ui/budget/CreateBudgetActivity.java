@@ -1,10 +1,6 @@
 package cs445.budgetapp.ui.budget;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,22 +19,14 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import cs445.budgetapp.MainActivity;
 import cs445.budgetapp.MyApplication;
 import cs445.budgetapp.R;
-import cs445.budgetapp.ui.profile.BudgetAdapter;
 import cs445.budgetapp.ui.profile.ProfileActivity;
 
-public class BudgetActivity extends AppCompatActivity {
+public class CreateBudgetActivity extends AppCompatActivity {
 
     String budgetCategory, budgetName;
 
@@ -71,8 +59,8 @@ public class BudgetActivity extends AppCompatActivity {
         // get user to access auth email
         FirebaseUser currUser = app.getAuthUser();
         // eliminate poor regex
-        String[] userPathArr = currUser.getEmail().split("@.");
-        String userPath = String.join("", userPathArr);
+        String[] userPathArr = currUser.getEmail().split("[@.]");
+        String userPath = String.join("",userPathArr);
 
         // initialize db reference for access
         userData = app.getDb().getReference("Users/"+ userPath);
@@ -100,7 +88,6 @@ public class BudgetActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 budgetCategory = adapterView.getItemAtPosition(i).toString();
-                Log.v("Success", "Category chosen!");
             }
 
             @Override
@@ -146,12 +133,10 @@ public class BudgetActivity extends AppCompatActivity {
                 Toast.makeText(this, "Already on budget page!", Toast.LENGTH_SHORT).show();
             }
             else if(pageId == R.id.navigation_profile) {
-                startActivity(new Intent(BudgetActivity.this, ProfileActivity.class));
+                startActivity(new Intent(CreateBudgetActivity.this, ProfileActivity.class));
             }
-            else if(pageId == R.id.navigation_search) {
-                Toast.makeText(this, "Going to webviews", Toast.LENGTH_SHORT).show();
-            } else  {
-                startActivity(new Intent(BudgetActivity.this, MainActivity.class));
+            else  {
+                startActivity(new Intent(CreateBudgetActivity.this, MainActivity.class));
             }
 
         });

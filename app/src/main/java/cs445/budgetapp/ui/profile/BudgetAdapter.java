@@ -12,10 +12,10 @@ import cs445.budgetapp.R;
 import cs445.budgetapp.ui.budget.Budget;
 
 public class BudgetAdapter extends RecyclerView.Adapter<BudgetItemViewHolder> {
-    private List<Budget> budgetList;
+    private List<Budget> list;
 
     public BudgetAdapter(List<Budget> budgetList) {
-        this.budgetList = budgetList;
+        this.list = budgetList;
     }
 
     @Override
@@ -26,7 +26,7 @@ public class BudgetAdapter extends RecyclerView.Adapter<BudgetItemViewHolder> {
 
     @Override
     public void onBindViewHolder(BudgetItemViewHolder holder, int i) {
-        Budget budget = budgetList.get(i);
+        Budget budget = list.get(i);
         holder.setBudgetName(budget.getName());
         holder.setBudgetAmount(budget.getAmount());
         holder.setBudgetDate(budget.getDate());
@@ -36,6 +36,6 @@ public class BudgetAdapter extends RecyclerView.Adapter<BudgetItemViewHolder> {
 
     @Override
     public int getItemCount() {
-        return budgetList.size();
+        return list.size();
     }
 }
