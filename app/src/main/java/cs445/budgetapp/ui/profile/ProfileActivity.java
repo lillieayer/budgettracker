@@ -184,7 +184,7 @@ public class ProfileActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if(createIncome.getText().toString() != null){
+                if(!createIncome.getText().toString().isEmpty()){
                     editor.putString(userPathArr[0], createIncome.getText().toString());
                     editor.apply();
                 }

@@ -3,6 +3,7 @@ package cs445.budgetapp.ui.budget;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -18,6 +19,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -148,6 +150,16 @@ public class CreateBudgetActivity extends AppCompatActivity {
             }
 
         });
+
+        MaterialToolbar appBar = findViewById(R.id.toolbar_budget);
+        SharedPreferences sharedPreferences = getSharedPreferences("budgetSharedPreferences",MODE_PRIVATE);
+
+        String[] userArr = currUser.getEmail().split("@");
+        String user = userArr[0];
+        String income = sharedPreferences.getString(user, "");
+        appBar.setTitle("Income: $" + income);
+
+
     }
 
     private class MyWebViewClient extends WebViewClient {

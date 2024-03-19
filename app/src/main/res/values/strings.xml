@@ -18,9 +18,9 @@
     <string name="title_activity_budget">BudgetActivity</string>
     <string name="action_settings">Settings</string>
     <string name="create_budget_title">Create New Budget</string>
-    <string name="editName">*Enter Budget Name:</string>
-    <string name="editAmt">*Enter Amount:</string>
-    <string name="editDate">Enter Start Date(MM/DD/YYYY):</string>
+    <string name="editName">*Enter name:</string>
+    <string name="editAmt">*Enter amount:</string>
+    <string name="editDate">Enter start date:</string>
     <string name="editCategory">Pick a Category:</string>
     <string name="editComment">Comment:</string>
     <string name="saveButton">Save</string>
@@ -37,8 +37,8 @@
     <string name="createProfile">Set Up Profile</string>
     <string name="makeUsername">Enter a username:</string>
     <string name="editIncome">Enter user income:</string>
-    <string name="endDate">Enter End Date (MM/DD/YYYY):</string>
-    <string name="requiredWarning">Note: fields with * are required!</string>
+    <string name="endDate">Enter end date:</string>
+    <string name="requiredWarning">Note: fields with * are required!\nDates should be in format (MM/DD/YYYY).</string>
     <string name="createUserWarning">*Note: you can only set your username once*</string>
     <string-array name="budgetCategories">
         <item>Housing</item>

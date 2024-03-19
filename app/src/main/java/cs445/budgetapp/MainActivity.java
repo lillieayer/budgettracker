@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        MaterialToolbar appBar = findViewById(R.id.toolbar);
+        MaterialToolbar appBar = findViewById(R.id.toolbar_main);
         SharedPreferences sharedPreferences = getSharedPreferences("budgetSharedPreferences",MODE_PRIVATE);
         FirebaseUser currUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currUser != null){
