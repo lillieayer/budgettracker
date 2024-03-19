@@ -18,11 +18,11 @@
     <string name="title_activity_budget">BudgetActivity</string>
     <string name="action_settings">Settings</string>
     <string name="create_budget_title">Create New Budget</string>
-    <string name="editName">Enter Name For Budget Item:  *Required*</string>
-    <string name="editAmt">Enter Amount: *Required*</string>
-    <string name="editDate">Enter a Start Date: </string>
-    <string name="editCategory">Pick a Category: </string>
-    <string name="editComment">Comment: </string>
+    <string name="editName">*Enter Budget Name:</string>
+    <string name="editAmt">*Enter Amount:</string>
+    <string name="editDate">Enter Start Date(MM/DD/YYYY):</string>
+    <string name="editCategory">Pick a Category:</string>
+    <string name="editComment">Comment:</string>
     <string name="saveButton">Save</string>
     <string name="searchButton">Searching</string>
     <string name="nav_home">Home</string>
@@ -31,12 +31,14 @@
     <string name="nav_make_budget">Make Budget</string>
     <string name="signup">Create Account</string>
     <string name="createUsername">Enter a email: </string>
-    <string name="createFirstName">Enter first name: </string>
-    <string name="createLastName">Enter last name: </string>
-    <string name="createPW">Enter a password: </string>
+    <string name="createFirstName">Enter first name:</string>
+    <string name="createLastName">Enter last name:</string>
+    <string name="createPW">Enter a password:</string>
     <string name="createProfile">Set Up Profile</string>
-    <string name="makeUsername">Enter a username: </string>
-    <string name="editIncome">Enter user income: </string>
+    <string name="makeUsername">Enter a username:</string>
+    <string name="editIncome">Enter user income:</string>
+    <string name="endDate">Enter End Date (MM/DD/YYYY):</string>
+    <string name="requiredWarning">Note: fields with * are required!</string>
     <string name="createUserWarning">*Note: you can only set your username once*</string>
     <string-array name="budgetCategories">
         <item>Housing</item>

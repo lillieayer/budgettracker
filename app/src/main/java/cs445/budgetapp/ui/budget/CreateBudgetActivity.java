@@ -9,6 +9,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebResourceRequest;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
@@ -18,6 +19,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 
@@ -44,20 +46,23 @@ public class CreateBudgetActivity extends AppCompatActivity {
         Button saveButton = findViewById(R.id.saveButton);
         // Find UI elements
         EditText editName = findViewById(R.id.edit_budget_name);
-        EditText editDate = findViewById(R.id.edit_budget_date);
+        EditText editDate = findViewById(R.id.edit_budget_start_date);
         EditText editAmt = findViewById(R.id.edit_budget_amt);
         EditText editComment = findViewById(R.id.edit_budget_comment);
+        EditText editEndDate = findViewById(R.id.edit_budget_end_date);
 
         editAmt.setText("0.00");
 
         WebView myWebView = (WebView) findViewById(R.id.webview);
         myWebView.loadUrl("https://www.nerdwallet.com/article/finance/nerdwallet-budget-calculator");
         myWebView.setWebViewClient(new MyWebViewClient());
+        WebSettings webSettings = myWebView.getSettings();
+        webSettings.setJavaScriptEnabled(false);
 
 
         app = (MyApplication) getApplication();
         // get user to access auth email
-        FirebaseUser currUser = app.getAuthUser();
+        FirebaseUser currUser = FirebaseAuth.getInstance().getCurrentUser();
         // eliminate poor regex
         String[] userPathArr = currUser.getEmail().split("[@.]");
         String userPath = String.join("",userPathArr);
@@ -101,6 +106,7 @@ public class CreateBudgetActivity extends AppCompatActivity {
             String budgetAmt = editAmt.getText().toString();
             String budgetDate = editDate.getText().toString();
             String budgetComment = editComment.getText().toString();
+            String bdugetEndDate = editEndDate.getText().toString();
             Budget new_budget = new Budget(budgetName, budgetCategory, budgetDate, budgetAmt,budgetComment);
 
             // make unique key for each budget's storage
@@ -113,9 +119,11 @@ public class CreateBudgetActivity extends AppCompatActivity {
 
             // clear fields
             editName.setText("");
-            editAmt.setText("0.00");
+            editAmt.setText("");
             editDate.setText("");
             editComment.setText("");
+            editEndDate.setText("");
+
 
         });
 

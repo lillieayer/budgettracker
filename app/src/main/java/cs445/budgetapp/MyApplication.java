@@ -15,21 +15,22 @@ public class MyApplication extends Application {
 
     private FirebaseDatabase db;
 
-    private FirebaseUser currUser;
+    private LoggedInUser user;
+
+
     @Override
     public void onCreate() {
         super.onCreate();
         // Initialize your global resources here
         db = FirebaseDatabase.getInstance();
         FirebaseApp.initializeApp(this);
-        currUser = FirebaseAuth.getInstance().getCurrentUser();
     }
 
     public FirebaseDatabase getDb() {
         return db;
     }
-    public FirebaseUser getAuthUser(){
-        return currUser;
-    }
+
+    public LoggedInUser getUserDisplayName(){return user;}
+    public void setUserDisplayName(LoggedInUser current){user=current;}
 }
 

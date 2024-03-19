@@ -17,6 +17,7 @@ import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKey;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -85,7 +86,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         app = (MyApplication) getApplication();
         // get user to access auth email
-        FirebaseUser currUser = app.getAuthUser();
+        FirebaseUser currUser = FirebaseAuth.getInstance().getCurrentUser();
 
         String[] userPathArr = currUser.getEmail().split("[@.]");
         String userPath = String.join("",userPathArr);
@@ -183,10 +184,11 @@ public class ProfileActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if(createName.getText().toString() != null){
-                    editor.putString(createName.getText().toString(), createIncome.getText().toString());
+                if(createIncome.getText().toString() != null){
+                    editor.putString(userPathArr[0], createIncome.getText().toString());
                     editor.apply();
                 }
+
 
             }
         });

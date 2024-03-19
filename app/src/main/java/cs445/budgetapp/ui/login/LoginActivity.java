@@ -147,26 +147,5 @@ public class LoginActivity extends AppCompatActivity {
         binding = null;
     }
 
-    /*
-    private void logInUser(String username, String pw){
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        mAuth.signInWithEmailAndPassword(username, pw)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        // Sign in success, update UI with the signed-in user's information
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        Toast.makeText(this, "Sign in was successful!", Toast.LENGTH_LONG).show();
-                        startActivity(intent);
-
-                    } else {
-                        // If sign in fails, display a message to the user.
-                        Toast.makeText(this, "Sign in has failed", Toast.LENGTH_LONG).show();
-                    }
-                });
-    }
-
-*/
-
-
 
 }
