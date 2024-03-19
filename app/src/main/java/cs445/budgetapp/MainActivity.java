@@ -4,10 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import android.app.Application;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -71,5 +74,15 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
+
+        Toolbar appBar = findViewById(R.id.toolbar);
+        SharedPreferences sharedPreferences = getSharedPreferences("budgetSharedPreferences",MODE_PRIVATE);
+        MyApplication app = (MyApplication) getApplication();
+        FirebaseUser currUser = app.getAuthUser();
+        String[] userArr = currUser.getEmail().split("@");
+        String user = userArr[0];
+        String income = sharedPreferences.getString(user, "");
+        appBar.setTitle("Income: $" + income);
+
     }
 }

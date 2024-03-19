@@ -46,7 +46,6 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        createName = findViewById(R.id.editUsername);
         createIncome = findViewById(R.id.editIncome);
 
 
@@ -64,7 +63,7 @@ public class ProfileActivity extends AppCompatActivity {
         try {
             sharedPreferences = EncryptedSharedPreferences.create(
                     this,
-                    "secret_shared_prefs",
+                    "budgetSharedPreferences",
                     masterKey,
                     EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
                     EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
@@ -170,23 +169,6 @@ public class ProfileActivity extends AppCompatActivity {
 
         });
 
-        createName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                createName.setEnabled(false);
-
-            }
-        });
 
         createIncome.addTextChangedListener(new TextWatcher() {
             @Override
@@ -203,7 +185,7 @@ public class ProfileActivity extends AppCompatActivity {
             public void afterTextChanged(Editable editable) {
                 if(createName.getText().toString() != null){
                     editor.putString(createName.getText().toString(), createIncome.getText().toString());
-
+                    editor.apply();
                 }
 
             }
