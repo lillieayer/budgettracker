@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        FloatingActionButton logoutButton = findViewById(R.id.logoutButton);
+        FloatingActionButton logoutButton = findViewById(R.id.logout_button_main);
 
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -12,14 +12,29 @@
             android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
             android:padding="10dp"
-            android:layout_alignParentTop="true"
             android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme" />
+            android:theme="?attr/actionBarTheme" >
+
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/logout_button_budget"
+                    android:layout_width="wrap_content"
+                    android:contentDescription="@string/logout"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:layout_gravity="end"
+                    android:layout_marginRight="5dp"
+                    android:clickable="true"
+                    app:srcCompat="@drawable/baseline_logout_24" />
+
+
+        </com.google.android.material.appbar.MaterialToolbar>
 
         <TextView
             android:id="@+id/discover_budget_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/toolbar_budget"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:background="@color/gold"
