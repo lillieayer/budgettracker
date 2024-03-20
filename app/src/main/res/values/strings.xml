@@ -1,7 +1,9 @@
 <resources>
     <string name="app_name">BudgetApp</string>
+    <string name="pw_requirements">*You must create a password with at least 1 digit, 1 special character and 1 uppercase letter* \n special characters accepted are !@#$%^&amp;*()_+</string>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
+    <string name="delete_prompt">Note: clicking this button will delete all budgets from history. this is a final action as they can\'t be retrieved.  </string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in</string>
     <string name="logout">Logout</string>
@@ -21,7 +23,7 @@
     <string name="create_budget_title">Create New Budget</string>
     <string name="editName">*Enter name:</string>
     <string name="editAmt">*Enter amount:</string>
-    <string name="editDate">Enter start date:</string>
+    <string name="editDate">Set start date:</string>
     <string name="editCategory">Pick a Category:</string>
     <string name="editComment">Comment:</string>
     <string name="saveButton">Save</string>
@@ -38,7 +40,7 @@
     <string name="createProfile">Set Up Profile</string>
     <string name="makeUsername">Enter a username:</string>
     <string name="editIncome">Enter user income:</string>
-    <string name="endDate">Enter end date:</string>
+    <string name="endDate">Set end date:</string>
     <string name="requiredWarning">Note: fields with * are required!\nDates should be in format (MM/DD/YYYY).</string>
     <string name="createUserWarning">*Note: you can only set your username once*</string>
     <string-array name="budgetCategories">

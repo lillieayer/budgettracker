@@ -10,7 +10,7 @@
             android:id="@+id/toolbar_budget"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
+            android:background="@color/gold"
             android:padding="10dp"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme" >
@@ -31,24 +31,10 @@
         </com.google.android.material.appbar.MaterialToolbar>
 
         <TextView
-            android:id="@+id/discover_budget_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/toolbar_budget"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:background="@color/gold"
-            android:fontFamily="sans-serif-condensed"
-            android:padding="10dp"
-            android:text="@string/discover"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
-
-        <TextView
             android:id="@+id/webViewDescrip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/discover_budget_title"
+            android:layout_below="@id/toolbar_budget"
             android:textColor="@color/black"
             android:padding="10dp"
             android:background="@color/teal_200"
@@ -119,32 +105,34 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:orientation="horizontal">
-
-
-                        <EditText
+                        <Button
                             android:id="@+id/edit_budget_start_date"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/editDate"
-                            android:inputType="date"
+                            android:layout_width="100dp"
+                            android:layout_height="70dp"
+                            android:text="@string/editDate"
+                            android:clickable="true"
+                            android:backgroundTint="@color/gold"
                             android:layout_gravity="center"
-                            android:textColor="@color/black"
-                            android:textSize="18sp" />
+                            android:textColor="@color/black" />
 
-                        <EditText
+                        <Button
                             android:id="@+id/edit_budget_end_date"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="100dp"
+                            android:layout_height="70dp"
+                            android:clickable="true"
                             android:layout_gravity="center"
                             android:textColor="@color/black"
-                            android:hint="@string/endDate"
-                            android:inputType="date" />
+                            android:backgroundTint="@color/gold"
+                            android:text="@string/endDate" />
                         <LinearLayout
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="60dp"
                             android:orientation="vertical"
-                            android:padding="5dp">
+                            android:background="@color/gold"
+                            android:margin="2dp"
+                            android:layout_gravity="center_vertical">
                                 <TextView
                                     android:id="@+id/pick_category_text"
                                     android:layout_width="wrap_content"
@@ -201,6 +189,7 @@
             android:layout_height="match_parent"
             android:layout_above="@id/create_budget_title"
             android:layout_below="@id/webViewDescrip" />
+
 
 
 </RelativeLayout>

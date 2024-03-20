@@ -1,11 +1,7 @@
 package cs445.budgetapp.ui.login;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
-import androidx.security.crypto.EncryptedSharedPreferences;
-import androidx.security.crypto.MasterKey;
 
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -22,20 +18,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
-import com.google.firebase.database.DatabaseReference;
-
-
-import java.io.IOException;
-import java.security.GeneralSecurityException;
-
-import cs445.budgetapp.MyApplication;
 import cs445.budgetapp.R;
 
 
 public class SignUpFragment extends Fragment {
 
     Button signupButton;
-    EditText createUser, createPW;
 
 
     public SignUpFragment() {
@@ -53,11 +41,10 @@ public class SignUpFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_sign_up, container, false);
-        createUser = view.findViewById(R.id.createUsername);
-        createPW = view.findViewById(R.id.createPassword);
+        EditText createUser = view.findViewById(R.id.createUsername);
+        EditText createPW = view.findViewById(R.id.createPassword);
         signupButton = view.findViewById(R.id.signupButton);
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
-
 
         createUser.addTextChangedListener(new TextWatcher() {
             @Override
@@ -81,11 +68,12 @@ public class SignUpFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                setSignUpButton(createUser.getText().toString(), createPW.getText().toString());
             }
 
             @Override
             public void afterTextChanged(Editable s) {
+                setSignUpButton(createUser.getText().toString(), createPW.getText().toString());
+
             }
         });
 
@@ -99,17 +87,17 @@ public class SignUpFragment extends Fragment {
                             Log.d("Success", "createUserWithEmail:success");
                             LinearLayout createAccount = view.findViewById(R.id.createAccountContainer);
                             createAccount.setVisibility(View.INVISIBLE);
-                            Toast.makeText(getContext(), "Account Created! Log in to continue!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity(), "Account Created! Log in to continue!", Toast.LENGTH_LONG).show();
                         } else {
                             // Sign up failed
                             if (task.getException() instanceof FirebaseAuthUserCollisionException) {
                                 // User already exists
-                                Toast.makeText(getContext(), "Account already exists! You must log in", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getActivity(), "Account already exists! You must log in", Toast.LENGTH_LONG).show();
                             } else {
                                 // Other error
                                 // If sign in fails, display a message to the user.
                                 Log.w("failure", "createUserWithEmail:failure", task.getException());
-                                Toast.makeText(getContext(), "Sign in failed: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                Toast.makeText(getActivity(), "Sign in failed: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
                             }
 
                         }
@@ -125,11 +113,17 @@ public class SignUpFragment extends Fragment {
 
 
     private void setSignUpButton(String email, String pw){
-        if ((!email.isEmpty()) && (!pw.isEmpty())) {
+        CredentialValidation validation = new CredentialValidation();
+        if ((validation.isEmailValid(email)) && (validation.isPasswordValid(pw))) {
             signupButton.setEnabled(true);
         } else{
             signupButton.setEnabled(false);
         }
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        signupButton = null;
+    }
 }
