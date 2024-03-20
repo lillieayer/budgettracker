@@ -29,7 +29,8 @@ public class BudgetAdapter extends RecyclerView.Adapter<BudgetItemViewHolder> {
         Budget budget = list.get(i);
         holder.setBudgetName(budget.getName());
         holder.setBudgetAmount(budget.getAmount());
-        holder.setBudgetDate(budget.getDate());
+        holder.setBudgetStartDate(budget.getStartDate());
+        holder.setBudgetEndDate(budget.getEndDate());
         holder.setBudgetCategory(budget.getCategory());
         holder.setBudgetComment(budget.getComment());
     }

@@ -1,10 +1,18 @@
 package cs445.budgetapp.ui.budget;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.security.crypto.EncryptedSharedPreferences;
+import androidx.security.crypto.MasterKey;
+import androidx.security.crypto.MasterKeys;
 
+import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.StrictMode;
+import android.provider.CalendarContract;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -21,23 +29,23 @@ import android.widget.Toast;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+import java.util.Calendar;
 
 import cs445.budgetapp.MainActivity;
 import cs445.budgetapp.MyApplication;
 import cs445.budgetapp.R;
+import cs445.budgetapp.ui.login.LoginActivity;
 import cs445.budgetapp.ui.profile.ProfileActivity;
 
 public class CreateBudgetActivity extends AppCompatActivity {
-
-    String budgetCategory, budgetName;
-
-    private MyApplication app;
-
-    private DatabaseReference userData;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,29 +56,29 @@ public class CreateBudgetActivity extends AppCompatActivity {
         Button saveButton = findViewById(R.id.saveButton);
         // Find UI elements
         EditText editName = findViewById(R.id.edit_budget_name);
-        EditText editDate = findViewById(R.id.edit_budget_start_date);
+        EditText editStartDate = findViewById(R.id.edit_budget_start_date);
+        EditText editEndDate = findViewById(R.id.edit_budget_end_date);
         EditText editAmt = findViewById(R.id.edit_budget_amt);
         EditText editComment = findViewById(R.id.edit_budget_comment);
-        EditText editEndDate = findViewById(R.id.edit_budget_end_date);
 
-        editAmt.setText("0.00");
 
         WebView myWebView = (WebView) findViewById(R.id.webview);
         myWebView.loadUrl("https://www.nerdwallet.com/article/finance/nerdwallet-budget-calculator");
         myWebView.setWebViewClient(new MyWebViewClient());
         WebSettings webSettings = myWebView.getSettings();
         webSettings.setJavaScriptEnabled(false);
+        webSettings.setAllowFileAccess(false);
 
 
-        app = (MyApplication) getApplication();
+        MyApplication app = (MyApplication) getApplication();
         // get user to access auth email
-        FirebaseUser currUser = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currUser = mAuth.getCurrentUser();
         // eliminate poor regex
-        String[] userPathArr = currUser.getEmail().split("[@.]");
-        String userPath = String.join("",userPathArr);
+        String userPath = currUser.getUid();
 
         // initialize db reference for access
-        userData = app.getDb().getReference("Users/"+ userPath);
+        DatabaseReference userData = app.getDb().getReference("Users/"+ userPath);
 
         editName.addTextChangedListener(new TextWatcher() {
             @Override
@@ -80,36 +88,25 @@ public class CreateBudgetActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+                String budgetName = editName.getText().toString();
+                saveButton.setEnabled(!budgetName.isEmpty());
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
-                budgetName = editName.getText().toString();
-                saveButton.setEnabled(!budgetName.isEmpty());
 
             }
         });
 
-        categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                budgetCategory = adapterView.getItemAtPosition(i).toString();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
 
         saveButton.setOnClickListener(view -> {
             // get user input
+            String budgetName = editName.getText().toString();
             String budgetAmt = editAmt.getText().toString();
-            String budgetDate = editDate.getText().toString();
+            String budgetStart = editStartDate.getText().toString();
+            String budgetEnd = editEndDate.getText().toString();
             String budgetComment = editComment.getText().toString();
-            String bdugetEndDate = editEndDate.getText().toString();
-            Budget new_budget = new Budget(budgetName, budgetCategory, budgetDate, budgetAmt,budgetComment);
+            Budget new_budget = new Budget(budgetName, categorySpinner.getSelectedItem().toString(), budgetStart, budgetEnd, budgetAmt,budgetComment);
 
             // make unique key for each budget's storage
             String key = userData.push().getKey();
@@ -119,14 +116,55 @@ public class CreateBudgetActivity extends AppCompatActivity {
                 Log.w("failure","Error storing new budget, null key");
             }
 
+            Calendar beginTime = Calendar.getInstance();
+            beginTime.set(Integer.parseInt(budgetStart.substring(6,10)), Integer.parseInt(budgetStart.substring(0,2)), Integer.parseInt(budgetStart.substring(3,5)), 12, 00);
+            Calendar endTime = Calendar.getInstance();
+            endTime.set(Integer.parseInt(budgetEnd.substring(6,10)), Integer.parseInt(budgetEnd.substring(0,2)), Integer.parseInt(budgetEnd.substring(3,5)), 11, 59);
+            Intent intent = new Intent(Intent.ACTION_INSERT)
+                    .setData(CalendarContract.Events.CONTENT_URI)
+                    .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, beginTime.getTimeInMillis())
+                    .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime.getTimeInMillis())
+                    .putExtra(CalendarContract.Events.TITLE, budgetName)
+                    .putExtra(CalendarContract.Events.DESCRIPTION, budgetComment);
+            Intent chooser = Intent.createChooser(intent,"Select a calendar app");
+            try {
+                startActivity(chooser);
+            } catch (ActivityNotFoundException e) {
+                Toast.makeText(this, "Must download a calendar app to add budget events", Toast.LENGTH_LONG).show();
+            }
+
+
+
             // clear fields
             editName.setText("");
             editAmt.setText("");
-            editDate.setText("");
+            editStartDate.setText("");
             editComment.setText("");
             editEndDate.setText("");
 
 
+        });
+
+        FloatingActionButton logoutButton = findViewById(R.id.logout_button_budget);
+
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mAuth.signOut();
+                mAuth.getInstance().addAuthStateListener(new FirebaseAuth.AuthStateListener() {
+                    @Override
+                    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                        FirebaseUser user = firebaseAuth.getCurrentUser();
+                        if (user == null) {
+                            // User is signed out
+                            Toast.makeText(CreateBudgetActivity.this, "Logging out", Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(CreateBudgetActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                            firebaseAuth.removeAuthStateListener(this); // Remove the listener
+                        }
+                    }
+                });
+            }
         });
 
 
@@ -152,11 +190,32 @@ public class CreateBudgetActivity extends AppCompatActivity {
         });
 
         MaterialToolbar appBar = findViewById(R.id.toolbar_budget);
-        SharedPreferences sharedPreferences = getSharedPreferences("budgetSharedPreferences",MODE_PRIVATE);
-
-        String[] userArr = currUser.getEmail().split("@");
-        String user = userArr[0];
-        String income = sharedPreferences.getString(user, "");
+        MasterKey masterKey = null;
+        try {
+            masterKey = new MasterKey.Builder(this)
+                    .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+                    .build();
+        } catch (GeneralSecurityException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        SharedPreferences sharedPreferences = null;
+        try {
+            sharedPreferences = EncryptedSharedPreferences.create(
+                    this,
+                    "budgetSharedPreferences",
+                    masterKey,
+                    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+            );
+        } catch (GeneralSecurityException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        String userId = currUser.getUid();
+        String income = sharedPreferences.getString(userId, "");
         appBar.setTitle("Income: $" + income);
 
 
@@ -165,28 +224,9 @@ public class CreateBudgetActivity extends AppCompatActivity {
     private class MyWebViewClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-            if ("www.example.com".equals(request.getUrl().getHost())) {
-                // This is your website, so don't override. Let your WebView load the
-                // page.
-                return false;
-            }
-            // Otherwise, the link isn't for a page on your site, so launch another
-            // Activity that handles URLs.
-            Intent intent = new Intent(Intent.ACTION_VIEW, request.getUrl());
-            startActivity(intent);
-            return true;
+            return false;
         }
     }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        userData = null;
-        budgetCategory = null;
-        budgetName = null;
-        app = null;
-    }
-
 
 }
 

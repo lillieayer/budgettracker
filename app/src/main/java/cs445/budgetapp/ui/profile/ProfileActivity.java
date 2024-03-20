@@ -5,7 +5,10 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -16,14 +19,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKey;
 
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -35,22 +39,35 @@ import cs445.budgetapp.MyApplication;
 import cs445.budgetapp.R;
 import cs445.budgetapp.ui.budget.Budget;
 import cs445.budgetapp.ui.budget.CreateBudgetActivity;
+import cs445.budgetapp.ui.login.LoginActivity;
 
 public class ProfileActivity extends AppCompatActivity {
-    private MyApplication app;
 
-    private DatabaseReference userData;
 
-    private EditText createName, createIncome;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        createIncome = findViewById(R.id.editIncome);
+        EditText createIncome = findViewById(R.id.editIncome);
+        ImageButton deleteButton = findViewById(R.id.deleteButton);
+
+        List<Budget> budgetList = new ArrayList<>();
+        BudgetAdapter budgetAdapter = new BudgetAdapter(budgetList);
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        LinearLayoutManager layout = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
+        recyclerView.setLayoutManager(layout);
+        recyclerView.setAdapter(budgetAdapter);
+
+        Button saveButton = findViewById(R.id.saveButton);
+        ImageButton editProfile = findViewById(R.id.editProfile);
+        MyApplication app = (MyApplication) getApplication();
+        // get user to access auth email
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currUser = mAuth.getCurrentUser();
 
 
-        MasterKey masterKey = null;
+        MasterKey masterKey;
         try {
             masterKey = new MasterKey.Builder(this)
                     .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
@@ -60,7 +77,7 @@ public class ProfileActivity extends AppCompatActivity {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        SharedPreferences sharedPreferences = null;
+        SharedPreferences sharedPreferences;
         try {
             sharedPreferences = EncryptedSharedPreferences.create(
                     this,
@@ -76,44 +93,29 @@ public class ProfileActivity extends AppCompatActivity {
         }
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
+        MaterialToolbar appBar = findViewById(R.id.toolbar_profile);
+        if (currUser != null){
+            // eliminate poor regex
+            String userId = currUser.getUid();
+            String income = sharedPreferences.getString(userId, "");
+            appBar.setTitle("Income: $" + income);
+            if (income.isEmpty()){
+                editProfile.setEnabled(false);
+                createIncome.setVisibility(View.VISIBLE);
+                saveButton.setVisibility(View.VISIBLE);
+            } else{
+                editProfile.setEnabled(true);
+                createIncome.setVisibility(View.INVISIBLE);
+                saveButton.setVisibility(View.INVISIBLE);
+            }
 
-        List<Budget> budgetList = new ArrayList<>();
-        BudgetAdapter budgetAdapter = new BudgetAdapter(budgetList);
-        RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        LinearLayoutManager layout = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
-        recyclerView.setLayoutManager(layout);
-        recyclerView.setAdapter(budgetAdapter);
+        }
 
-        app = (MyApplication) getApplication();
-        // get user to access auth email
-        FirebaseUser currUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        String[] userPathArr = currUser.getEmail().split("[@.]");
-        String userPath = String.join("",userPathArr);
+        assert currUser != null;
+        String userPath = currUser.getUid();
         // initialize db reference for access
-        userData = app.getDb().getReference("Users/"+ userPath);
-
-        // retrieve users past budgets
-        userData.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot pastBudgets) {
-                if (pastBudgets.exists()){
-                    int numBudgets = 0;
-
-                    for (DataSnapshot budget : pastBudgets.getChildren()){
-                        Budget old_budget = budget.getValue(Budget.class);
-                        budgetList.add(old_budget);
-                        numBudgets++;
-                    }
-                    budgetAdapter.notifyItemRangeInserted(0,numBudgets);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+        DatabaseReference userData = app.getDb().getReference("Users/"+ userPath);
 
         userData.addChildEventListener(new ChildEventListener() {
             @Override
@@ -133,11 +135,7 @@ public class ProfileActivity extends AppCompatActivity {
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-                Budget old_budget = (Budget)snapshot.getValue(Budget.class);
-                int i = budgetList.indexOf(old_budget);
-                budgetList.remove(old_budget);
-                budgetAdapter.notifyItemRemoved(i);
-
+                // not deleting individual data
             }
 
             @Override
@@ -148,6 +146,28 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 //ignore
+            }
+        });
+
+        FloatingActionButton logoutButton = findViewById(R.id.logout_button_profile);
+
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mAuth.signOut();
+                mAuth.getInstance().addAuthStateListener(new FirebaseAuth.AuthStateListener() {
+                    @Override
+                    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                        FirebaseUser user = firebaseAuth.getCurrentUser();
+                        if (user == null) {
+                            // User is signed out
+                            Toast.makeText(ProfileActivity.this, "Logging out", Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                            firebaseAuth.removeAuthStateListener(this); // Remove the listener
+                        }
+                    }
+                });
             }
         });
 
@@ -179,25 +199,40 @@ public class ProfileActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+                if(!createIncome.getText().toString().isEmpty()){
+                    saveButton.setEnabled(true);
+                }
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if(!createIncome.getText().toString().isEmpty()){
-                    editor.putString(userPathArr[0], createIncome.getText().toString());
-                    editor.apply();
-                }
-
 
             }
         });
+
+        saveButton.setOnClickListener(view -> {
+            editor.putString(userPath, createIncome.getText().toString());
+            editor.apply();
+            createIncome.setText("");
+            editProfile.setEnabled(true);
+            saveButton.setVisibility(View.INVISIBLE);
+            createIncome.setVisibility(View.INVISIBLE);
+        });
+
+        editProfile.setOnClickListener(view -> {
+            createIncome.setVisibility(View.VISIBLE);
+            saveButton.setVisibility(View.VISIBLE);
+            editProfile.setEnabled(false);
+
+        });
+
+        deleteButton.setOnClickListener(view -> {
+            int i = budgetList.size();
+            budgetList.clear();
+            budgetAdapter.notifyItemRangeRemoved(0, i);
+            userData.removeValue();
+        });
+
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        userData = null;
-        app = null;
-    }
 }

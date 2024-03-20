@@ -10,6 +10,7 @@
     <string name="explanation">
         Navigate to the menu tabs below by clicking twice on a location in order to explore creating budgets and tracking expenses to become more financially organized!
     </string>
+    <string name="chooser_title">Select Calendar App</string>
     <string name="discover">Discover</string>
     <string name="webviewDescrip">Read below for budgeting advice from Nerd Wallet and use their budgeting calculator to help budget smarter!</string>
     <string name="invalid_username">Not a valid username</string>

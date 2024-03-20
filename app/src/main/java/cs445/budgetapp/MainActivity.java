@@ -2,6 +2,8 @@ package cs445.budgetapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.security.crypto.EncryptedSharedPreferences;
+import androidx.security.crypto.MasterKey;
 
 
 import android.content.Intent;
@@ -16,6 +18,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+
 import cs445.budgetapp.ui.budget.CreateBudgetActivity;
 import cs445.budgetapp.ui.login.LoginActivity;
 import cs445.budgetapp.ui.profile.ProfileActivity;
@@ -24,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -33,8 +39,8 @@ public class MainActivity extends AppCompatActivity {
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FirebaseAuth.getInstance().signOut();
-                FirebaseAuth.getInstance().addAuthStateListener(new FirebaseAuth.AuthStateListener() {
+                mAuth.signOut();
+                mAuth.getInstance().addAuthStateListener(new FirebaseAuth.AuthStateListener() {
                     @Override
                     public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                         FirebaseUser user = firebaseAuth.getCurrentUser();
@@ -76,12 +82,35 @@ public class MainActivity extends AppCompatActivity {
 
 
         MaterialToolbar appBar = findViewById(R.id.toolbar_main);
-        SharedPreferences sharedPreferences = getSharedPreferences("budgetSharedPreferences",MODE_PRIVATE);
-        FirebaseUser currUser = FirebaseAuth.getInstance().getCurrentUser();
+        MasterKey masterKey = null;
+        try {
+            masterKey = new MasterKey.Builder(this)
+                    .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+                    .build();
+        } catch (GeneralSecurityException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        SharedPreferences sharedPreferences = null;
+        try {
+            sharedPreferences = EncryptedSharedPreferences.create(
+                    this,
+                    "budgetSharedPreferences",
+                    masterKey,
+                    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+            );
+        } catch (GeneralSecurityException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        FirebaseUser currUser = mAuth.getCurrentUser();
         if (currUser != null){
-            String[] userArr = currUser.getEmail().split("@");
-            String user = userArr[0];
-            String income = sharedPreferences.getString(user, "");
+            // eliminate poor regex
+            String userId = currUser.getUid();
+            String income = sharedPreferences.getString(userId, "");
             appBar.setTitle("Income: $" + income);
 
         }
