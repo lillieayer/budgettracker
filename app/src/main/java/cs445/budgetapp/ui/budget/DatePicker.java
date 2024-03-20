@@ -33,7 +33,7 @@ public class DatePicker extends DialogFragment implements DatePickerDialog.OnDat
         int year = mCalendar.get(Calendar.YEAR);
         int month = mCalendar.get(Calendar.MONTH);
         int dayOfMonth = mCalendar.get(Calendar.DAY_OF_MONTH);
-        return new DatePickerDialog(getActivity(), (DatePickerDialog.OnDateSetListener) getActivity(), year, month, dayOfMonth);
+        return new DatePickerDialog(getActivity(), this::onDateSet, year, month, dayOfMonth);
 
     }
 

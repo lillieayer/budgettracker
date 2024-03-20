@@ -41,7 +41,7 @@
     <string name="makeUsername">Enter a username:</string>
     <string name="editIncome">Enter user income:</string>
     <string name="endDate">Set end date:</string>
-    <string name="requiredWarning">Note: fields with * are required!\nDates should be in format (MM/DD/YYYY).</string>
+    <string name="requiredWarning">Note: fields with * are required!</string>
     <string name="createUserWarning">*Note: you can only set your username once*</string>
     <string-array name="budgetCategories">
         <item>Housing</item>
