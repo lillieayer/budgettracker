@@ -5,7 +5,6 @@ package cs445.budgetapp.ui.login;
  */
 class LoggedInUserView {
     private String displayName;
-    //... other data fields that may be accessible to the UI
 
     LoggedInUserView(String displayName) {
         this.displayName = displayName;
@@ -14,4 +13,5 @@ class LoggedInUserView {
     String getDisplayName() {
         return displayName;
     }
+
 }
