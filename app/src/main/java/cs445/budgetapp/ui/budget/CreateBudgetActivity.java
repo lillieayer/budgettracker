@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKey;
 
-import android.app.DatePickerDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -34,7 +33,6 @@ import com.google.firebase.database.DatabaseReference;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.text.DateFormat;
 
 import cs445.budgetapp.MainActivity;
 import cs445.budgetapp.MyApplication;
@@ -138,10 +136,10 @@ public class CreateBudgetActivity extends AppCompatActivity {
             String budgetStart = (String) editStartDate.getText();
             String budgetEnd = (String) editEndDate.getText();
             String budgetComment = editComment.getText().toString();
-            if (budgetStart == "Set start date"){
+            if (budgetStart.equals("Set start date")){
                 budgetStart = "";
             }
-            if (budgetEnd == "Set end date"){
+            if (budgetEnd.equals("Set end date")){
                 budgetEnd = "";
             }
 
@@ -230,7 +228,7 @@ public class CreateBudgetActivity extends AppCompatActivity {
         });
 
         MaterialToolbar appBar = findViewById(R.id.toolbar_budget);
-        MasterKey masterKey = null;
+        MasterKey masterKey;
         try {
             masterKey = new MasterKey.Builder(this)
                     .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
@@ -240,7 +238,7 @@ public class CreateBudgetActivity extends AppCompatActivity {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        SharedPreferences sharedPreferences = null;
+        SharedPreferences sharedPreferences;
         try {
             sharedPreferences = EncryptedSharedPreferences.create(
                     this,

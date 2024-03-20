@@ -1,12 +1,9 @@
 package cs445.budgetapp.ui.login;
 
-import androidx.annotation.StringRes;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,11 +18,6 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.annotations.Nullable;
-
-
-import cs445.budgetapp.MainActivity;
 import cs445.budgetapp.R;
 import cs445.budgetapp.databinding.ActivityLoginBinding;
 
@@ -103,15 +95,13 @@ public class LoginActivity extends AppCompatActivity {
             }
             loadingProgressBar.setVisibility(View.GONE);
             if (loginResult.getError() != null) {
-                showLoginFailed(loginResult.getError());
+                showLoginFailed();
             }
             if (loginResult.getSuccess() != null) {
-                updateUiWithUser(loginResult.getSuccess());
+                updateUiWithUser();
             }
             setResult(Activity.RESULT_OK);
 
-            //Complete and destroy login activity once successful
-            //finish();
         });
 
         loginButton.setOnClickListener(v -> {
@@ -122,13 +112,13 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private void updateUiWithUser(LoggedInUserView model) {
+    private void updateUiWithUser() {
         String welcome = getString(R.string.welcome) ;
         // TODO : initiate successful logged in experience
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
     }
 
-    private void showLoginFailed(@StringRes Integer errorString) {
+    private void showLoginFailed() {
         Toast.makeText(this, "Login has failed", Toast.LENGTH_SHORT).show();
     }
 
