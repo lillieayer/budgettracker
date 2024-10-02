@@ -1,4 +1,4 @@
-# Budget Tracker App
+# BudgetGo
 
 ## Installation
 1. Navigate to the github main page and click on the green "Code" button in the upper right-hand corner.
