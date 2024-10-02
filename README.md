@@ -9,6 +9,7 @@
    You will need your GitHub username and [Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens).
 
 
-   ## Background Info
-   This link contains good feature basics about user authentication, account profile and other features a budget app should contain.
-   https://wesoftyou.com/fintech/budget-app-development-essential-features-and-monetization-strategies/
+## Description
+
+BudgetGo is a budgeting appp that allows users to manage and plan their finances while syncing budgets with their calendar. In addition to securing your finances for the future, BudgetGo provides financial advice in the form of tidbits from NerdWallet to remind users of good practices when they plan their budgets.
+  
