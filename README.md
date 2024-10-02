@@ -1,6 +1,6 @@
 # Budget Tracker App
 
-## Setup
+## Installation
 1. Navigate to the github main page and click on the green "Code" button in the upper right-hand corner.
 2. On the "HTTPS" tab, copy the link. Then, open Terminal, `cd` to a directory where you want to keep the project code, and run:
    
