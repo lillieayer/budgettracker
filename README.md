@@ -11,5 +11,5 @@
 
 ## Description
 
-BudgetGo is a budgeting appp that allows users to manage and plan their finances while syncing budgets with their calendar. In addition to securing your finances for the future, BudgetGo provides financial advice in the form of tidbits from NerdWallet to remind users of good practices when they plan their budgets.
+BudgetGo is a budgeting app that allows users to manage and plan their finances while syncing budgets with their calendar. In addition to securing your finances for the future, BudgetGo provides financial advice in the form of tidbits from NerdWallet to remind users of good practices when they plan their budgets.
   
